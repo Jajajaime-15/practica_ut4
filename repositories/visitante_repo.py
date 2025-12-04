@@ -10,7 +10,7 @@ class VisitanteRepo:
             if preferencias_json:
                 return VisitanteModel.create(nombre=nombre, email=email, altura=altura, fecha_registro=fecha_registro, preferencias_json=preferencias_json)
             else:
-                return VisitanteModel.create(nombre=nombre, email=email, altura=altura, fecha_registro=fecha_registro,)
+                return VisitanteModel.create(nombre=nombre, email=email, altura=altura, fecha_registro=fecha_registro)
         except Exception as e:
             print(f"Error insertando al visitante: {e}")
             return None
