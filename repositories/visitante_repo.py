@@ -1,7 +1,6 @@
 from peewee import * #type: ignore
 from playhouse import postgres_ext #type: ignore
 from models.visitante_model import VisitanteModel
-from models.atraccion_model import AtraccionModel
 import json
 
 class VisitanteRepo:
@@ -49,3 +48,8 @@ class VisitanteRepo:
     @staticmethod
     def mostrar_atraccion(atraccion):
         pass
+
+    @staticmethod
+    def eliminar_id(id):
+        pass
+    

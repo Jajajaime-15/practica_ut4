@@ -47,3 +47,7 @@ class TicketRepo:
     @staticmethod
     def mostrar_por_atraccion(id_atraccion):    
         return list(TicketModel.select().where(TicketModel.atraccion_id==id_atraccion))
+    
+    @staticmethod
+    def actualizar_uso(id):
+        pass

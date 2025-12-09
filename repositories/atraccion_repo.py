@@ -48,3 +48,11 @@ class AtraccionRepo:
         except Exception as e:
             print(f"Error al anyadir la caracteristica a la atraccion: {e}")
             return None
+
+    @staticmethod
+    def cambiar_estado(id):
+        pass
+
+    @staticmethod
+    def eliminar_id(id):
+        pass
