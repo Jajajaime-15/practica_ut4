@@ -14,3 +14,29 @@ class VisitanteRepo:
         except Exception as e:
             print(f"Error insertando al visitante: {e}")
             return None
+        
+    @staticmethod
+    def buscar_id(id):
+        try:
+            return VisitanteModel.get(VisitanteModel.id == id)
+        except Exception as e:
+            print(f"Error buscando el visitante con id {id}: {e}")
+            return None
+    
+    @staticmethod
+    def eliminar_restriccion_visitante(visitante_id, restriccion):
+        try:
+            visitante = VisitanteRepo.buscar_id(visitante_id)
+            if visitante: # en caso de existir el visitante introducido
+                restricciones = visitante.preferencias["restricciones"]
+                if restriccion in restricciones: # en caso de estar la restriccion en la lista de restricciones del visitante
+                    restricciones.remove(restriccion) # eliminacion de la restriccion almacenada en el jsonb
+                    visitante.preferencias["restricciones"] = restricciones # asignacion de la lista modificada 
+                    visitante.save()
+                else:
+                    print("La restriccion indicada no se encuentra entre las restricciones del visitante introducido")
+            else:
+                print("El visitante introducido no existe")
+        except Exception as e:
+            print(f"Error al eliminar la restriccion del visitante: {e}")
+            return None
