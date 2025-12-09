@@ -1,6 +1,7 @@
 from peewee import * #type: ignore
 from playhouse import postgres_ext #type: ignore
 from models.visitante_model import VisitanteModel
+from models.atraccion_model import AtraccionModel
 import json
 
 class VisitanteRepo:
@@ -14,7 +15,11 @@ class VisitanteRepo:
         except Exception as e:
             print(f"Error insertando al visitante: {e}")
             return None
-        
+    
+    @staticmethod
+    def mostrar_todos():
+        return list(VisitanteModel.select())
+            
     @staticmethod
     def buscar_id(id):
         try:
@@ -40,3 +45,7 @@ class VisitanteRepo:
         except Exception as e:
             print(f"Error al eliminar la restriccion del visitante: {e}")
             return None
+        
+    @staticmethod
+    def mostrar_atraccion(atraccion):
+        pass

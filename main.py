@@ -87,7 +87,8 @@ def atracciones():
         "\n7. "
         "\n0. Volver\n"
         )
-
+def tickets():
+    pass
 
 def main():
     principal()

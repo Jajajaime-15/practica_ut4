@@ -14,3 +14,11 @@ class AtraccionRepo:
         except Exception as e:
             print(f"Error insertando la atraccion: {e}")
             return None
+
+    @staticmethod
+    def mostrar_todas():
+        return list(AtraccionModel.select())
+    
+    @staticmethod
+    def mostrar_activas():
+        return list(AtraccionModel.select().where(AtraccionModel.activa == True))

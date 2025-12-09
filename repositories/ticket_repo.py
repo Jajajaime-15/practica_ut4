@@ -14,6 +14,10 @@ class TicketRepo:
         except Exception as e:
             print(f"Error insertando el ticket: {e}")
             return None
+
+    @staticmethod
+    def mostrar_todos():
+        return list(TicketModel.select())
         
     @staticmethod
     def buscar_id(id):
@@ -35,3 +39,11 @@ class TicketRepo:
         except Exception as e:
             print(f"Error al cambiar el precio del ticket: {e}")
             return None
+
+    @staticmethod
+    def mostrar_por_visitante(id_visitante):
+        return list(TicketModel.select().where(TicketModel.visitante_id==id_visitante))
+    
+    @staticmethod
+    def mostrar_por_atraccion(id_atraccion):    
+        return list(TicketModel.select().where(TicketModel.atraccion_id==id_atraccion))
