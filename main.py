@@ -11,9 +11,6 @@ from repositories.ticket_repo import TicketRepo
 from repositories.visitante_repo import VisitanteRepo
 from ingesta import ingesta
 
-inicializar_base([AtraccionModel, VisitanteModel, TicketModel])
-ingesta()
-
 def principal():
     while True:
         print("--> MENU PARQUE DE ATRACCIONES <-- \n"\
@@ -45,3 +42,12 @@ def principal():
                             preferencias = "" # MIRAR COMO SE METE JSON
                             VisitanteRepo.crear_visitante(nombre, email, altura)#, preferencias)
                             print("Visitante creado correctamente.")
+
+def main():
+    principal()
+    #VisitanteRepo.crear_visitante()
+
+if __name__ == "__main__":
+    inicializar_base([AtraccionModel, VisitanteModel, TicketModel])
+    ingesta()
+    main()
