@@ -24,24 +24,70 @@ def principal():
         opcion = input("Elige una opcion: ")
         match opcion:
             case "1":
-                while True:
-                    print("--> VISITANTES\n" \
-                    "\n1. Crear visitante\n" \
-                    "\n2. Mostrar visitantes\n" \
-                    "\n3. Eliminar visitante\n" \
-                    "\n4. Mostrar visitantes con preferencia por las atracciones 'extremas'\n" \
-                    "n\5. Mostrar visitantes con problemas cardiacos\n" \
-                    "\n0. Volver\n"
-                    )
-                    opcion = input("Elige una opcion: ")
-                    match opcion:
-                        case "1":
-                            nombre = input("Nombre: ")
-                            email = input("Email: ")
-                            altura = input("Altura: ")
-                            preferencias = "" # MIRAR COMO SE METE JSON
-                            VisitanteRepo.crear_visitante(nombre, email, altura)#, preferencias)
-                            print("Visitante creado correctamente.")
+                visitantes()
+            case "2":
+                atracciones()
+            case "3":
+                tickets()
+            case "4":
+                opjson()
+            case "5":
+                consultas_utiles()
+            case "0":
+                print("\nSaliendo del programa...")
+                break
+            case _:
+                print("\nOpcion no valida\n")
+
+
+def visitantes():
+    while True:
+        print("--> VISITANTES\n" \
+        "\n1. Crear visitante\n" \
+        "\n2. Mostrar visitantes\n" \
+        "\n3. Eliminar visitante\n" \
+        "\n4. Mostrar visitantes con preferencia por las atracciones 'extremas'\n" \
+        "n\5. Mostrar visitantes con problemas cardiacos\n" \
+        "\n0. Volver\n"
+        )
+        opcion = input("Elige una opcion: ")
+        match opcion:
+            case "1":
+                nombre = input("Nombre: ")
+                email = input("Email: ")
+                altura = input("Altura: ")
+                preferencias = "" # MIRAR COMO SE METE JSON
+                VisitanteRepo.crear_visitante(nombre, email, altura)#, preferencias)
+                print("Visitante creado correctamente.")
+            case "2":
+                for visitante in VisitanteRepo.mostrar_todos():
+                    pprint(visitante.__dict__["__data__"])
+            case "3":
+                id = int(input("ID del visitante a eliminar: "))
+                VisitanteRepo.borrar_visitante(id)
+                print("Visitante eliminado correctamente")
+            case "4":
+                for visitante in VisitanteRepo.mostrar_extremas():
+                    pprint(visitante.__dict__["__data__"])
+            case "5":
+                for visitante in VisitanteRepo.mostrar_cardio():
+                    pprint(visitante.__dict__["__data__"])
+            case "0":
+                principal()
+
+def atracciones():
+    while True:
+        print("--> ATRACCIONES\n" \
+        "\n1. Crear atraccion\n" \
+        "\n2. Mostrar atracciones\n" \
+        "\n3. Eliminar atraccion\n" \
+        "\n4. Mostrar atracciones activas\n" \
+        "n\5. Mostrar atracciones con intensidad mayor a 7\n" \
+        "\n6. Mostrar atracciones con duracion mayor a 120s\n"\
+        "\n7. "
+        "\n0. Volver\n"
+        )
+
 
 def main():
     principal()
