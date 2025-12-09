@@ -3,12 +3,16 @@ from peewee import * #type: ignore
 from playhouse import postgres_ext #type: ignore
 from playhouse import shortcuts #type: ignore 
 from database import db, inicializar_base
+from models.atraccion_model import AtraccionModel
+from models.visitante_model import VisitanteModel
+from models.ticket_model import TicketModel
 from repositories.atraccion_repo import AtraccionRepo
 from repositories.ticket_repo import TicketRepo
 from repositories.visitante_repo import VisitanteRepo
+from ingesta import ingesta
 
-
-inicializar_base([])
+inicializar_base([AtraccionModel, VisitanteModel, TicketModel])
+ingesta()
 
 def principal():
     while True:
@@ -17,7 +21,7 @@ def principal():
             "\n2. Atracciones\n"\
             "\n3. Tickets\n"\
             "\n4. Operaciones JSON\n"\
-            "\n5. Consultas avanzadas\n"\
+            "\n5. Consultas utiles\n"\
             "\n0. Salir\n"
             )
         opcion = input("Elige una opcion: ")
@@ -39,5 +43,5 @@ def principal():
                             email = input("Email: ")
                             altura = input("Altura: ")
                             preferencias = "" # MIRAR COMO SE METE JSON
-                            VisitanteRepo.crear_visitante(nombre, email, altura, preferencias)
+                            VisitanteRepo.crear_visitante(nombre, email, altura)#, preferencias)
                             print("Visitante creado correctamente.")

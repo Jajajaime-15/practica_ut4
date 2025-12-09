@@ -9,7 +9,7 @@ class TicketModel(BaseModel):
     visitante_id = ForeignKeyField(VisitanteModel, backref="tickets")
     atraccion_id = ForeignKeyField(AtraccionModel, backref="tickets", null=True)
     fecha_compra = DateTimeField(default=datetime.now)
-    fecha_compra = DateField()
+    fecha_visita = DateField()
     tipo_ticket = TextField(constraints=[Check("tipo_ticket IN ('general', 'colegio', 'empleado')")])
     detalles_compra = postgres_ext.BinaryJSONField(null=True, default={
         "precio": 45.99,

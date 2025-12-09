@@ -8,7 +8,7 @@ class VisitanteRepo:
     def crear_visitante(nombre, email, altura, fecha_registro, preferencias_json=None):
         try:
             if preferencias_json:
-                return VisitanteModel.create(nombre=nombre, email=email, altura=altura, fecha_registro=fecha_registro, preferencias_json=preferencias_json)
+                return VisitanteModel.create(nombre=nombre, email=email, altura=altura, fecha_registro=fecha_registro, preferencias=preferencias_json)
             else:
                 return VisitanteModel.create(nombre=nombre, email=email, altura=altura, fecha_registro=fecha_registro)
         except Exception as e:
