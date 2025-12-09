@@ -1,5 +1,5 @@
-from peewee import * # type: ignore
-import envyte # type: ignore
+from peewee import * #type: ignore
+import envyte #type: ignore
 
 db = PostgresqlDatabase(
     envyte.get("DATABASE"),

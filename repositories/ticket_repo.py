@@ -8,7 +8,7 @@ class TicketRepo:
     def crear_ticket(visitante_id, atraccion_id, fecha_compra, fecha_visita, tipo_ticket, usado, fecha_uso, detalles_compra_json=None):
         try:
             if detalles_compra_json:
-                return TicketModel.create(visitante_id=visitante_id, atraccion_id=atraccion_id, fecha_compra=fecha_compra, fecha_visita=fecha_visita, tipo_ticket=tipo_ticket, usado=usado, fecha_uso=fecha_uso, detalles_compra_json=detalles_compra_json)
+                return TicketModel.create(visitante_id=visitante_id, atraccion_id=atraccion_id, fecha_compra=fecha_compra, fecha_visita=fecha_visita, tipo_ticket=tipo_ticket, usado=usado, fecha_uso=fecha_uso, detalles_compra=detalles_compra_json)
             else:
                 return TicketModel.create(visitante_id=visitante_id, atraccion_id=atraccion_id, fecha_compra=fecha_compra, fecha_visita=fecha_visita, tipo_ticket=tipo_ticket, usado=usado, fecha_uso=fecha_uso)
         except Exception as e:

@@ -5,64 +5,245 @@ from models.ticket_model import TicketModel
 def ingesta():
     visitantes_data = [
                     # EJEMPLO HAY QUE CAMBIARLOS
-                    {
-                        'nombre': 'Ana García López',
-                        'email': 'ana.garcia@email.com',
-                        'altura': '666123456',
-                        'fecha_registro': 'particular',
-                        'preferencias': {}
+                        {
+                        'nombre': 'Laura Sánchez Pérez',
+                        'email': 'laura.sanchez@email.com',
+                        'altura': '165',
+                        'fecha_registro': '2024-01-15 10:30:00',
+                        'preferencias': {
+                            'tipo_favorito': 'familiar',
+                            'restricciones': [],
+                            'historial_visitas': [
+                                {'fecha': '2024-01-20', 'atracciones_visitadas': 5},
+                                {'fecha': '2024-02-10', 'atracciones_visitadas': 7}
+                            ]
+                        }
                     },
                     {
-                        'nombre': 'Carlos Martínez Ruiz',
-                        'email': 'carlos.martinez@email.com',
-                        'altura': '123',
-                        'fecha_registro': 'particular',
-                        'preferencias': {}
+                        'nombre': 'Miguel Ángel Fernández',
+                        'email': 'miguel.fernandez@email.com',
+                        'altura': '178',
+                        'fecha_registro': '2024-01-20 14:15:00',
+                        'preferencias': {
+                            'tipo_favorito': 'extrema',
+                            'restricciones': [],
+                            'historial_visitas': [
+                                {'fecha': '2024-01-25', 'atracciones_visitadas': 10},
+                                {'fecha': '2024-02-15', 'atracciones_visitadas': 15}
+                            ]
+                        }
+                    },
+                    {
+                        'nombre': 'Isabel Rodríguez Torres',
+                        'email': 'isabel.rt@empresa.com',
+                        'altura': '162',
+                        'fecha_registro': '2024-02-05 09:00:00',
+                        'preferencias': {
+                            'tipo_favorito': 'moderada',
+                            'restricciones': ['embarazo'],
+                            'historial_visitas': [
+                                {'fecha': '2024-02-12', 'atracciones_visitadas': 6}
+                            ]
+                        }
+                    },
+                    {
+                        'nombre': 'David Chen',
+                        'email': 'david.chen@email.com',
+                        'altura': '180',
+                        'fecha_registro': '2024-02-10 16:45:00',
+                        'preferencias': {
+                            'tipo_favorito': 'extrema',
+                            'restricciones': [],
+                            'historial_visitas': [
+                                {'fecha': '2024-02-18', 'atracciones_visitadas': 12},
+                                {'fecha': '2024-03-05', 'atracciones_visitadas': 18},
+                                {'fecha': '2024-03-20', 'atracciones_visitadas': 14}
+                            ]
+                        }
+                    },
+                    {
+                        'nombre': 'Elena Morales Gutiérrez',
+                        'email': 'elena.morales@email.com',
+                        'altura': '170',
+                        'fecha_registro': '2024-02-15 11:20:00',
+                        'preferencias': {
+                            'tipo_favorito': 'familiar',
+                            'restricciones': ['problemas_cardiacos', 'vértigo'],
+                            'historial_visitas': [
+                                {'fecha': '2024-02-22', 'atracciones_visitadas': 4},
+                                {'fecha': '2024-03-08', 'atracciones_visitadas': 5}
+                            ]
+                        }
                     }
+
                 ]
 
     atracciones_data = [
                     # EJEMPLO HAY QUE CAMBIARLOS
                     {
-                        'nombre': 'Ana García López',
-                        'tipo': 'ana.garcia@email.com',
-                        'altura_minima': '666123456',
-                        'detalles': {},
-                        'activa': 'ana.garcia@email.com',
-                        'fecha_inauguracion': '666123456'
+                    'nombre': 'Dragón de Fuego',
+                    'tipo': 'extrema',
+                    'altura_minima': 150,
+                    'detalles': {
+                        'duracion_segundos': 120,
+                        'capacidad_por_turno': 20,
+                        'caracteristicas': ['caida_libre', 'giro_360', 'loopings_dobles'],
+                        'horarios': {
+                            'apertura': '10:00',
+                            'cierre': '22:00',
+                            'mantenimiento': ['13:00-14:00']
+                        }
                     },
-                    {
-                        'nombre': 'Ana García López',
-                        'tipo': 'ana.garcia@email.com',
-                        'altura_minima': '666123456',
-                        'detalles': {},
-                        'activa': 'ana.garcia@email.com',
-                        'fecha_inauguracion': '666123456'
-                    }
+                    'activa': True,
+                    'fecha_inauguracion': '2023-05-15'
+                },
+                {
+                    'nombre': 'Tobogán Acuático',
+                    'tipo': 'acuatica',
+                    'altura_minima': 120,
+                    'detalles': {
+                        'duracion_segundos': 45,
+                        'capacidad_por_turno': 30,
+                        'caracteristicas': ['tobogan_curvo', 'piscina_final'],
+                        'horarios': {
+                            'apertura': '11:00',
+                            'cierre': '20:00',
+                            'mantenimiento': ['15:30-16:00']
+                        }
+                    },
+                    'activa': True,
+                    'fecha_inauguracion': '2023-06-20'
+                },
+                {
+                    'nombre': 'Carrousel Mágico',
+                    'tipo': 'familiar',
+                    'altura_minima': 90,
+                    'detalles': {
+                        'duracion_segundos': 180,
+                        'capacidad_por_turno': 40,
+                        'caracteristicas': ['caballos_musicales', 'luces_led'],
+                        'horarios': {
+                            'apertura': '10:00',
+                            'cierre': '21:00',
+                            'mantenimiento': []
+                        }
+                    },
+                    'activa': True,
+                    'fecha_inauguracion': '2023-04-10'
+                },
+                {
+                    'nombre': 'Torre del Terror',
+                    'tipo': 'extrema',
+                    'altura_minima': 140,
+                    'detalles': {
+                        'duracion_segundos': 90,
+                        'capacidad_por_turno': 16,
+                        'caracteristicas': ['caida_libre', 'aceleracion_rapida'],
+                        'horarios': {
+                            'apertura': '11:00',
+                            'cierre': '23:00',
+                            'mantenimiento': ['14:30-15:30']
+                        }
+                    },
+                    'activa': False,
+                    'fecha_inauguracion': '2022-08-05'
+                },
+                {
+                    'nombre': 'Castillo Saltarín',
+                    'tipo': 'infantil',
+                    'altura_minima': 100,
+                    'detalles': {
+                        'duracion_segundos': 300,
+                        'capacidad_por_turno': 25,
+                        'caracteristicas': ['trampolines', 'pelotero', 'toboganes_suaves'],
+                        'horarios': {
+                            'apertura': '10:00',
+                            'cierre': '19:00',
+                            'mantenimiento': ['12:30-13:00']
+                        }
+                    },
+                    'activa': True,
+                    'fecha_inauguracion': '2024-01-12'
+                }
                 ]
 
     tickets_data = [
                     # EJEMPLO HAY QUE CAMBIARLOS
                     {
-                        'visitante_id': 'Ana García López',
-                        'atraccion_id': 'ana.garcia@email.com',
-                        'fecha_compra': '666123456',
-                        'fecha_visita': 'particular',
-                        'tipo_ticket': 'particular',
-                        'detalles_compra': {},
-                        'usado': 'particular',
-                        'fecha_uso': 'particular'
+                    'visitante_id': 1,  # Laura Sánchez Pérez
+                    'atraccion_id': 1,  # Dragón de Fuego
+                    'fecha_compra': '2024-01-18 09:15:00',
+                    'fecha_visita': '2024-01-20',
+                    'tipo_ticket': 'general',
+                    'detalles_compra': {
+                        'precio': 50.99,
+                        'descuentos_aplicados': ['early_bird'],
+                        'servicios_extra': ['fast_pass'],
+                        'metodo_pago': 'tarjeta'
                     },
-                    {
-                        'visitante_id': 'Ana García López',
-                        'atraccion_id': 'ana.garcia@email.com',
-                        'fecha_compra': '666123456',
-                        'fecha_visita': 'particular',
-                        'tipo_ticket': 'particular',
-                        'detalles_compra': {},
-                        'usado': 'particular',
-                        'fecha_uso': 'particular'
-                    }
+                    'usado': True,
+                    'fecha_uso': '2024-01-20 11:30:00'
+                },
+                {
+                    'visitante_id': 1,
+                    'atraccion_id': 2,  # Tobogán Acuático
+                    'fecha_compra': '2024-02-08 14:20:00',
+                    'fecha_visita': '2024-02-10',
+                    'tipo_ticket': 'general',
+                    'detalles_compra': {
+                        'precio': 35.50,
+                        'descuentos_aplicados': [],
+                        'servicios_extra': [],
+                        'metodo_pago': 'paypal'
+                    },
+                    'usado': True,
+                    'fecha_uso': '2024-02-10 15:45:00'
+                },
+                {
+                    'visitante_id': 2,  # Miguel Ángel Fernández
+                    'atraccion_id': 1,  # Dragón de Fuego
+                    'fecha_compra': '2024-01-22 16:30:00',
+                    'fecha_visita': '2024-01-25',
+                    'tipo_ticket': 'general',
+                    'detalles_compra': {
+                        'precio': 60.00,
+                        'descuentos_aplicados': [],
+                        'servicios_extra': ['fast_pass', 'foto_recuerdo'],
+                        'metodo_pago': 'tarjeta'
+                    },
+                    'usado': True,
+                    'fecha_uso': '2024-01-25 12:15:00'
+                },
+                {
+                    'visitante_id': 2,
+                    'atraccion_id': 7,  # Montaña Rusa Xtreme
+                    'fecha_compra': '2024-02-12 10:45:00',
+                    'fecha_visita': '2024-02-15',
+                    'tipo_ticket': 'general',
+                    'detalles_compra': {
+                        'precio': 55.75,
+                        'descuentos_aplicados': ['grupo'],
+                        'servicios_extra': ['fast_pass'],
+                        'metodo_pago': 'efectivo'
+                    },
+                    'usado': True,
+                    'fecha_uso': '2024-02-15 16:20:00'
+                },
+                {
+                    'visitante_id': 3,  # Isabel Rodríguez Torres
+                    'atraccion_id': 3,  # Carrousel Mágico
+                    'fecha_compra': '2024-02-08 11:10:00',
+                    'fecha_visita': '2024-02-12',
+                    'tipo_ticket': 'general',
+                    'detalles_compra': {
+                        'precio': 25.00,
+                        'descuentos_aplicados': ['embarazada'],
+                        'servicios_extra': [],
+                        'metodo_pago': 'tarjeta'
+                    },
+                    'usado': True,
+                    'fecha_uso': '2024-02-12 10:30:00'
+                }
                 ]
 
     VisitanteModel.insert_many(visitantes_data).execute()
