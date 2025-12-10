@@ -24,6 +24,22 @@ class AtraccionRepo:
         return list(AtraccionModel.select().where(AtraccionModel.activa == True))
     
     @staticmethod
+    def mostrar_intensidad():
+        pass
+
+    @staticmethod
+    def mostrar_duracion():
+        pass
+
+    @staticmethod
+    def mostrar_looping_caida():
+        pass
+
+    @staticmethod
+    def mostrar_mantenimiento_programado():
+        pass
+
+    @staticmethod
     def buscar_id(id):
         try:
             return AtraccionModel.get(AtraccionModel.id == id)

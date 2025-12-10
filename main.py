@@ -106,7 +106,32 @@ def atracciones():
             case "3":
                 id = int(input("ID de la atraccion a eliminar: "))
                 AtraccionRepo.eliminar_id(id)
-                print("Atraccion eliminada correctamente.")
+            case "4":
+                for atraccion in AtraccionRepo.mostrar_activas():
+                    pprint(atraccion.__dict__["__data__"])
+            case "5":
+                for atraccion in AtraccionRepo.mostrar_intensidad():
+                    pprint(atraccion.__dict__["__data__"])
+            case "5":
+                for atraccion in AtraccionRepo.mostrar_intensidad():
+                    pprint(atraccion.__dict__["__data__"])
+            case "6":
+                for atraccion in AtraccionRepo.mostrar_duracion():
+                    pprint(atraccion.__dict__["__data__"])
+            case "7":
+                for atraccion in AtraccionRepo.mostrar_looping_caida():
+                    pprint(atraccion.__dict__["__data__"])
+            case "8":
+                for atraccion in AtraccionRepo.mostrar_mantenimiento_programado():
+                    pprint(atraccion.__dict__["__data__"])
+            case "9":
+                id = int(input("ID de la atraccion que quieres cambiar el estado: "))
+                AtraccionRepo.cambiar_estado(id)
+            case "0":
+                break
+            case _:
+                print("Opcion no valida.")
+
 def tickets():
     pass
 
