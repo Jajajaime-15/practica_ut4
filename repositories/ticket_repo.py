@@ -1,6 +1,8 @@
 from peewee import * #type: ignore
 from playhouse import postgres_ext #type: ignore
 from models.ticket_model import TicketModel
+from models.visitante_model import VisitanteModel
+import datetime
 import json
 
 class TicketRepo:
@@ -48,6 +50,25 @@ class TicketRepo:
     def mostrar_por_atraccion(id_atraccion):    
         return list(TicketModel.select().where(TicketModel.atraccion_id==id_atraccion))
     
+    # TERMINAR DE ENTENDER PARA COMPLETAR LA CONSULTA. OBTENER VISITANTES QUE TIENEN UN TICKET PARA UNA ATRACCION (DIRECTA O GENERAL)
+    @staticmethod
+    def mostrar_ticket_visitantes_atraccion(id_atraccion):
+        pass
+        #return list(VisitanteModel.select().join(TicketModel).where((TicketModel.atraccion_id=id_atraccion) or (TicketModel.id_atraccion )))
+    
     @staticmethod
     def actualizar_uso(id):
-        pass
+        try:
+            ticket = TicketRepo.buscar_id(id)
+            if not ticket:
+                print(f"Ticket {id} no encontrado.")
+                return
+            
+            ticket.usado = True
+            ticket.fecha_uso = datetime.now()
+            ticket.save()
+            print(f"El uso del ticket {id} se ha cambiado a {ticket.usado}")
+            return ticket
+        except Exception as e:
+            print(f"Error al cambiar el estado de uso del ticket {id}: {e}")
+            return None
