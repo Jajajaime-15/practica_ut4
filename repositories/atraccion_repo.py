@@ -51,8 +51,29 @@ class AtraccionRepo:
 
     @staticmethod
     def cambiar_estado(id):
-        pass
+        try:
+            atraccion = AtraccionRepo.buscar_id(id)
+            if not atraccion:
+                print(f"Atraccion con id {id} no encontrada.")
+                return
+            if atraccion.activa:
+                atraccion.activa = False
+            else:
+                atraccion.activa = True
+            atraccion.save()
+            print(f"El estado de la atraccion {id} se ha cambiado a {atraccion.activa}")
+            return atraccion
+        except Exception as e:
+            print(f"Error al cambiar el esdado de la atraccion con id {id}: {e}")
+            return None
 
     @staticmethod
     def eliminar_id(id):
-        pass
+        try:
+            query = AtraccionModel.delete().where(AtraccionModel.id==id)
+            eliminado = query.execute()
+            if eliminado == 0:
+                print(f"No se encontro la atraccion con id: {id}")
+            return eliminado
+        except Exception as e:
+            print(f"Error al eliminar la atraccion {e}")
