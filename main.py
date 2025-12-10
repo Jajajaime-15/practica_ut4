@@ -73,20 +73,40 @@ def visitantes():
                 for visitante in VisitanteRepo.mostrar_cardio():
                     pprint(visitante.__dict__["__data__"])
             case "0":
-                principal()
+                break
+            case _:
+                print("Opcion no valida.")
 
 def atracciones():
     while True:
         print("--> ATRACCIONES\n" \
-        "\n1. Crear atraccion\n" \
-        "\n2. Mostrar atracciones\n" \
-        "\n3. Eliminar atraccion\n" \
-        "\n4. Mostrar atracciones activas\n" \
-        "n\5. Mostrar atracciones con intensidad mayor a 7\n" \
-        "\n6. Mostrar atracciones con duracion mayor a 120s\n"\
-        "\n7. "
-        "\n0. Volver\n"
+            "\n1. Crear atraccion\n" \
+            "\n2. Mostrar atracciones\n" \
+            "\n3. Eliminar atraccion\n" \
+            "\n4. Mostrar atracciones activas\n" \
+            "n\5. Mostrar atracciones con intensidad mayor a 7\n" \
+            "\n6. Mostrar atracciones con duracion mayor a 120s\n"\
+            "\n7. Mostrar atracciones con 'looping' y 'caida libre'\n"\
+            "\n8. Mostrar atracciones con mantenimiento programado\n"\
+            "\n9. Cambiar el estado de una atraccion (activa/inactiva)\n"
+            "\n0. Volver\n"
         )
+        opcion = input("Elige una opcion: ")
+        match opcion:
+            case "1":
+                nombre = input("Nombre: ")
+                tipo = input("Tipo: ")
+                altura_min = int(input("Altura minima (cm): "))
+                detalles = {}
+                AtraccionRepo.crear_atraccion(nombre,tipo,altura_min,detalles)
+                print("Atraccion creada correctamente.")
+            case "2":
+                for atraccion in AtraccionRepo.mostrar_todas():
+                    pprint(atraccion.__dict__["__data__"])
+            case "3":
+                id = int(input("ID de la atraccion a eliminar: "))
+                AtraccionRepo.eliminar_id(id)
+                print("Atraccion eliminada correctamente.")
 def tickets():
     pass
 
