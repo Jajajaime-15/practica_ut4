@@ -39,7 +39,6 @@ def principal():
             case _:
                 print("\nOpcion no valida\n")
 
-
 def visitantes():
     while True:
         print("--> VISITANTES\n" \
@@ -135,9 +134,15 @@ def atracciones():
 def tickets():
     pass
 
+def opjson():
+    pass
+
+def consultas_utiles():
+    pass
+
 def main():
     principal()
-    #VisitanteRepo.crear_visitante()
+    VisitanteRepo.crear_visitante()
 
 if __name__ == "__main__":
     inicializar_base([AtraccionModel, VisitanteModel, TicketModel])
