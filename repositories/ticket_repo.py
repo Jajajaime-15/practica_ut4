@@ -19,7 +19,11 @@ class TicketRepo:
 
     @staticmethod
     def mostrar_todos():
-        return list(TicketModel.select())
+        try:
+            return list(TicketModel.select())
+        except Exception as e:
+            print(f"Error al obtener los tickets: {e}")
+            return None
         
     @staticmethod
     def buscar_id(id):
@@ -39,23 +43,41 @@ class TicketRepo:
             else:
                 print("El ticket introducido no existe")
         except Exception as e:
-            print(f"Error al cambiar el precio del ticket: {e}")
+            print(f"Error al cambiar el precio del ticket {ticket_id}: {e}")
             return None
 
     @staticmethod
     def mostrar_por_visitante(id_visitante):
-        return list(TicketModel.select().where(TicketModel.visitante_id==id_visitante))
+        try:
+            return list(TicketModel.select().where(TicketModel.visitante_id==id_visitante))
+        except Exception as e:
+            print(f"Error al obtener los tickets del visitante con id:{id_visitante}: {e}")
+            return None
     
     @staticmethod
     def mostrar_por_atraccion(id_atraccion):    
-        return list(TicketModel.select().where(TicketModel.atraccion_id==id_atraccion))
+        try:
+            return list(TicketModel.select().where(TicketModel.atraccion_id==id_atraccion))
+        except Exception as e:
+            print(f"Error al obtener los tickets de la atraccion {id_atraccion}: {e}")
+            return None
     
-    # TERMINAR DE ENTENDER PARA COMPLETAR LA CONSULTA. OBTENER VISITANTES QUE TIENEN UN TICKET PARA UNA ATRACCION (DIRECTA O GENERAL)
+    # PENDIENTES #
     @staticmethod
     def mostrar_ticket_visitantes_atraccion(id_atraccion):
         pass
         #return list(VisitanteModel.select().join(TicketModel).where((TicketModel.atraccion_id=id_atraccion) or (TicketModel.id_atraccion )))
-    
+
+    @staticmethod
+    def mostrar_ticket_colegio():
+        pass
+
+    @staticmethod
+    def mostrar_descuento_estuciante():
+        pass
+
+    #############################################
+
     @staticmethod
     def actualizar_uso(id):
         try:
@@ -72,3 +94,4 @@ class TicketRepo:
         except Exception as e:
             print(f"Error al cambiar el estado de uso del ticket {id}: {e}")
             return None
+        

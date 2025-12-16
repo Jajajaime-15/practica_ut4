@@ -17,7 +17,10 @@ class VisitanteRepo:
     
     @staticmethod
     def mostrar_todos():
-        return list(VisitanteModel.select())
+        try:
+            return list(VisitanteModel.select())
+        except Exception as e:
+            print(f"Error al obtener los visitantes: {e}")
             
     @staticmethod
     def buscar_id(id):
@@ -26,6 +29,20 @@ class VisitanteRepo:
         except Exception as e:
             print(f"Error buscando el visitante con id {id}: {e}")
             return None
+    
+    # PENDIENTE #
+    @staticmethod
+    def mostrar_extremas():
+        pass
+
+    @staticmethod
+    def mostrar_cardio():
+        pass
+
+    @staticmethod
+    def eliminar_id(id):
+        pass
+    ###############################
     
     @staticmethod
     def eliminar_restriccion_visitante(visitante_id, restriccion):
@@ -45,11 +62,5 @@ class VisitanteRepo:
             print(f"Error al eliminar la restriccion del visitante: {e}")
             return None
         
-    @staticmethod
-    def mostrar_atraccion(atraccion):
-        pass
 
-    @staticmethod
-    def eliminar_id(id):
-        pass
     

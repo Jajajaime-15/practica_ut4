@@ -17,12 +17,21 @@ class AtraccionRepo:
 
     @staticmethod
     def mostrar_todas():
-        return list(AtraccionModel.select())
+        try:
+            return list(AtraccionModel.select())
+        except Exception as e:
+            print(f"Error al obtener las atracciones")
+            return None
     
     @staticmethod
     def mostrar_activas():
-        return list(AtraccionModel.select().where(AtraccionModel.activa == True))
+        try:
+            return list(AtraccionModel.select().where(AtraccionModel.activa == True))
+        except Exception as e:
+            print(f"Error al obtener atracciones 'activas'")
+            return None
     
+    # PENDIENTE COMO HACER CON NUMEROS #
     @staticmethod
     def mostrar_intensidad():
         pass
@@ -30,14 +39,23 @@ class AtraccionRepo:
     @staticmethod
     def mostrar_duracion():
         pass
-
+    ##########################################
+    
     @staticmethod
     def mostrar_looping_caida():
-        pass
+        try:
+            return list(AtraccionModel.select().where(AtraccionModel.detalles["caracteristicas"].contains(["looping"]) & AtraccionModel.detalles["caracteristicas"].contains(["caida_libre"])))
+        except Exception as e:
+            print(f"Error al obtener atracciones con 'caida libre' y 'looping':{e}")
+            return None
 
     @staticmethod
     def mostrar_mantenimiento_programado():
-        pass
+        try:
+            return list(AtraccionModel.select().where(AtraccionModel.detalles["horarios"]["mantenimiento"].is_null(False)))
+        except Exception as e:
+            print(f"Error al obtener atracciones con un mantenimiento programado: {e}")
+            return None
 
     @staticmethod
     def buscar_id(id):
