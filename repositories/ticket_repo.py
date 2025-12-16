@@ -7,12 +7,12 @@ import json
 
 class TicketRepo:
     @staticmethod
-    def crear_ticket(visitante_id, atraccion_id, fecha_compra, fecha_visita, tipo_ticket, usado, fecha_uso, detalles_compra_json=None):
+    def crear_ticket(visitante_id, atraccion_id, fecha_visita, tipo_ticket, usado, fecha_uso, detalles_compra_json=None):
         try:
             if detalles_compra_json:
-                return TicketModel.create(visitante_id=visitante_id, atraccion_id=atraccion_id, fecha_compra=fecha_compra, fecha_visita=fecha_visita, tipo_ticket=tipo_ticket, usado=usado, fecha_uso=fecha_uso, detalles_compra=detalles_compra_json)
+                return TicketModel.create(visitante_id=visitante_id, atraccion_id=atraccion_id, fecha_visita=fecha_visita, tipo_ticket=tipo_ticket, usado=usado, fecha_uso=fecha_uso, detalles_compra=detalles_compra_json)
             else:
-                return TicketModel.create(visitante_id=visitante_id, atraccion_id=atraccion_id, fecha_compra=fecha_compra, fecha_visita=fecha_visita, tipo_ticket=tipo_ticket, usado=usado, fecha_uso=fecha_uso)
+                return TicketModel.create(visitante_id=visitante_id, atraccion_id=atraccion_id, fecha_visita=fecha_visita, tipo_ticket=tipo_ticket, usado=usado, fecha_uso=fecha_uso)
         except Exception as e:
             print(f"Error insertando el ticket: {e}")
             return None
@@ -70,13 +70,15 @@ class TicketRepo:
         #return list(VisitanteModel.select().join(TicketModel).where((TicketModel.atraccion_id=id_atraccion) or (TicketModel.id_atraccion )))
     #############################################
 
+    ### REVISAR DA ERROR ###
     @staticmethod
     def mostrar_ticket_colegio():
         try:
-            return list(TicketModel.select().where(TicketModel.tipo_ticket == "colegio" & TicketModel.detalles_compra["precio"]<30))
+            return list(TicketModel.select().where(TicketModel.tipo_ticket == "colegio") & (TicketModel.detalles_compra["precio"]<30))
         except Exception as e:
             print(f"Error al obtener los tickets de tipo colegio de precion inferior a 30€: {e}")
             return None
+    ###############################
 
     @staticmethod
     def mostrar_descuento_estudiante():
@@ -95,7 +97,7 @@ class TicketRepo:
                 return
             
             ticket.usado = True
-            ticket.fecha_uso = datetime.now()
+            ticket.fecha_uso = datetime.datetime.now()
             ticket.save()
             print(f"El uso del ticket {id} se ha cambiado a {ticket.usado}")
             return ticket

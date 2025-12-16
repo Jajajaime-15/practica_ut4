@@ -5,12 +5,12 @@ import json
 
 class VisitanteRepo:
     @staticmethod
-    def crear_visitante(nombre, email, altura, fecha_registro, preferencias_json=None):
+    def crear_visitante(nombre, email, altura,preferencias_json=None):
         try:
             if preferencias_json:
-                return VisitanteModel.create(nombre=nombre, email=email, altura=altura, fecha_registro=fecha_registro, preferencias=preferencias_json)
+                return VisitanteModel.create(nombre=nombre, email=email, altura=altura, preferencias=preferencias_json)
             else:
-                return VisitanteModel.create(nombre=nombre, email=email, altura=altura, fecha_registro=fecha_registro)
+                return VisitanteModel.create(nombre=nombre, email=email, altura=altura)
         except Exception as e:
             print(f"Error insertando al visitante: {e}")
             return None

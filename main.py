@@ -42,7 +42,7 @@ def principal():
 
 def visitantes():
     while True:
-        print("--> VISITANTES\n" \
+        print("\n--> VISITANTES\n" \
         "\n1. Crear visitante\n" \
         "\n2. Mostrar visitantes\n" \
         "\n3. Eliminar visitante\n" \
@@ -57,8 +57,7 @@ def visitantes():
                 email = input("Email: ")
                 altura = input("Altura: ")
                 preferencias = {}
-                fecha_registro = ""
-                VisitanteRepo.crear_visitante(nombre, email, altura,fecha_registro)
+                VisitanteRepo.crear_visitante(nombre, email, altura)
                 print("Visitante creado correctamente.")
             case "2":
                 for visitante in VisitanteRepo.mostrar_todos():
@@ -80,7 +79,7 @@ def visitantes():
 
 def atracciones():
     while True:
-        print("--> ATRACCIONES\n" \
+        print("\n--> ATRACCIONES\n" \
             "\n1. Crear atraccion\n" \
             "\n2. Mostrar atracciones\n" \
             "\n3. Eliminar atraccion\n" \
@@ -134,7 +133,7 @@ def atracciones():
 
 def tickets():
     while True:
-        print("--> TICKETS\n" \
+        print("\n--> TICKETS\n" \
             "\n1. Crear ticket\n" \
             "\n2. Mostrar tickets\n" \
             "\n3. Mostrar tickets de un visitante\n" \
@@ -156,11 +155,10 @@ def tickets():
                     id_atraccion=int(id_atraccion_str)
                 fecha_visita = input("Fecha de visita (YYYY-MM-DD): ")
                 tipo_ticket = input("Tipo de ticket (general, colegio o empleado): ")
-                fecha_compra = datetime.datetime.now()
                 usado = False
                 fecha_uso = None
                 detalles ={}
-                TicketRepo.crear_ticket(id_visitante,id_atraccion,fecha_compra,fecha_visita,tipo_ticket,usado,fecha_uso,detalles)
+                TicketRepo.crear_ticket(id_visitante,id_atraccion,fecha_visita,tipo_ticket,usado,fecha_uso,detalles)
                 print("Ticket creado correctamente.")
             case "2":
                 for ticket in TicketRepo.mostrar_todos():
@@ -182,6 +180,7 @@ def tickets():
                 id = int(input("ID del ticket que quieres marcar como usado: "))
                 TicketRepo.actualizar_uso(id)
             case "7":
+                # REVISAR DA ERROR
                 for ticket in TicketRepo.mostrar_ticket_colegio():
                     pprint(ticket.__dict__["__data__"])
             case "8":
@@ -193,7 +192,7 @@ def tickets():
                 print("Opcion no valida")
 def opjson():
     while True:
-        print("--> OPERACIONES JSON\n" \
+        print("\n--> OPERACIONES JSON\n" \
             "\n1. Cambiar precio de un ticket\n" \
             "\n2. Eliminar restriccion a un visitante\n" \
             "\n3. Agregar una nueva caracteristica de una atraccion\n" \
@@ -217,7 +216,7 @@ def opjson():
 
 def consultas_utiles():
     while True:
-        print("--> CONSULTAS UTILES\n" \
+        print("\n--> CONSULTAS UTILES\n" \
             "\n1. Mostrar visitantes ordenados por cantidad total de tickets comprados (mayor-menor)\n" \
             "\n2. 5 atracciones mas vendidas (en tickets especificos)\n" \
             "\n3. Visitantes que han gastado mas de 100e en tickets\n" \
