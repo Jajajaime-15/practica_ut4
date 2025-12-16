@@ -31,7 +31,7 @@ class AtraccionRepo:
             print(f"Error al obtener atracciones 'activas'")
             return None
     
-    # PENDIENTE COMO HACER CON NUMEROS #
+    ####### PENDIENTE COMO HACER CON NUMEROS ######
     @staticmethod
     def mostrar_intensidad():
         pass
@@ -102,7 +102,7 @@ class AtraccionRepo:
             return None
 
     @staticmethod
-    def eliminar_id(id):
+    def eliminar_atraccion(id):
         try:
             query = AtraccionModel.delete().where(AtraccionModel.id==id)
             eliminado = query.execute()

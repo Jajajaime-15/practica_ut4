@@ -6,9 +6,9 @@ from datetime import datetime
 class VisitanteModel(BaseModel):
     nombre = TextField()
     email = TextField(unique=True)
-    altura = IntegerField() # en centimetros
+    altura = IntegerField()
     fecha_registro = DateTimeField(default=datetime.now)
-    preferencias = postgres_ext.BinaryJSONField(null=True, default={ # dejar vacio el default
+    preferencias = postgres_ext.BinaryJSONField(null=True, default={
         "tipo_favorito": "extrema",
         "restricciones": ["problemas_cardiacos"],
         "historial_visitas": [

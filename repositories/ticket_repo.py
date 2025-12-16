@@ -62,21 +62,29 @@ class TicketRepo:
             print(f"Error al obtener los tickets de la atraccion {id_atraccion}: {e}")
             return None
     
-    # PENDIENTES #
+    ############## PENDIENTE ####################
+    # Obtener visitantes que tienen ticket para una atracción (directa o general)
     @staticmethod
     def mostrar_ticket_visitantes_atraccion(id_atraccion):
         pass
         #return list(VisitanteModel.select().join(TicketModel).where((TicketModel.atraccion_id=id_atraccion) or (TicketModel.id_atraccion )))
+    #############################################
 
     @staticmethod
     def mostrar_ticket_colegio():
-        pass
+        try:
+            return list(TicketModel.select().where(TicketModel.tipo_ticket == "colegio" & TicketModel.detalles_compra["precio"]<30))
+        except Exception as e:
+            print(f"Error al obtener los tickets de tipo colegio de precion inferior a 30€: {e}")
+            return None
 
     @staticmethod
-    def mostrar_descuento_estuciante():
-        pass
-
-    #############################################
+    def mostrar_descuento_estudiante():
+        try:
+            return list(TicketModel.select().where(TicketModel.detalles_compra["descuentos_aplicados"].contains(["estudiante"])))
+        except Exception as e:
+            print(f"Error al obtener los tickets que tienen un descuento de estudiante: {e}")
+            return None
 
     @staticmethod
     def actualizar_uso(id):

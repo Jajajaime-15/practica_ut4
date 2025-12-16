@@ -30,20 +30,33 @@ class VisitanteRepo:
             print(f"Error buscando el visitante con id {id}: {e}")
             return None
     
-    # PENDIENTE #
     @staticmethod
     def mostrar_extremas():
-        pass
+        try:
+            return list(VisitanteModel.select().where(VisitanteModel.preferencias["tipo_favorito"] == "extrema"))
+        except Exception as e:
+            print(f"Error al obtener visitantes con preferecncia por atracciones extremas: {e}")
+            return None
 
     @staticmethod
     def mostrar_cardio():
-        pass
+        try:
+            return list(VisitanteModel.select().where(VisitanteModel.preferencias["restricciones"].contains(["problemas_cardiacos"])))
+        except Exception as e:
+            print(f"Error al obtener visitantes con problemas cardiacos: {e}")
+            return None
 
     @staticmethod
-    def eliminar_id(id):
-        pass
-    ###############################
-    
+    def eliminar_visitante(id):
+        try:
+            query = VisitanteModel.delete().where(VisitanteModel.id==id)
+            eliminado = query.execute()
+            if eliminado == 0:
+                print(f"No hay ningun visitante con el id {id}")
+            return eliminado
+        except Exception as e:
+            print(f"Error al eliminar al visitante con id {id}: {e}")
+
     @staticmethod
     def eliminar_restriccion_visitante(visitante_id, restriccion):
         try:

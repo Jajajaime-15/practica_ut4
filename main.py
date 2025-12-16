@@ -2,6 +2,7 @@ from pprint import pprint
 from peewee import * #type: ignore
 from playhouse import postgres_ext #type: ignore
 from playhouse import shortcuts #type: ignore 
+import datetime
 from database import db, inicializar_base
 from models.atraccion_model import AtraccionModel
 from models.visitante_model import VisitanteModel
@@ -46,7 +47,7 @@ def visitantes():
         "\n2. Mostrar visitantes\n" \
         "\n3. Eliminar visitante\n" \
         "\n4. Mostrar visitantes con preferencia por las atracciones 'extremas'\n" \
-        "n\5. Mostrar visitantes con problemas cardiacos\n" \
+        "\n5. Mostrar visitantes con problemas cardiacos\n" \
         "\n0. Volver\n"
         )
         opcion = input("Elige una opcion: ")
@@ -55,15 +56,16 @@ def visitantes():
                 nombre = input("Nombre: ")
                 email = input("Email: ")
                 altura = input("Altura: ")
-                preferencias = "" # MIRAR COMO SE METE JSON
-                VisitanteRepo.crear_visitante(nombre, email, altura)#, preferencias)
+                preferencias = {}
+                fecha_registro = ""
+                VisitanteRepo.crear_visitante(nombre, email, altura,fecha_registro)
                 print("Visitante creado correctamente.")
             case "2":
                 for visitante in VisitanteRepo.mostrar_todos():
                     pprint(visitante.__dict__["__data__"])
             case "3":
                 id = int(input("ID del visitante a eliminar: "))
-                VisitanteRepo.borrar_visitante(id)
+                VisitanteRepo.eliminar_visitante(id)
                 print("Visitante eliminado correctamente")
             case "4":
                 for visitante in VisitanteRepo.mostrar_extremas():
@@ -83,7 +85,7 @@ def atracciones():
             "\n2. Mostrar atracciones\n" \
             "\n3. Eliminar atraccion\n" \
             "\n4. Mostrar atracciones activas\n" \
-            "n\5. Mostrar atracciones con intensidad mayor a 7\n" \
+            "\n5. Mostrar atracciones con intensidad mayor a 7\n" \
             "\n6. Mostrar atracciones con duracion mayor a 120s\n"\
             "\n7. Mostrar atracciones con 'looping' y 'caida libre'\n"\
             "\n8. Mostrar atracciones con mantenimiento programado\n"\
@@ -104,17 +106,16 @@ def atracciones():
                     pprint(atraccion.__dict__["__data__"])
             case "3":
                 id = int(input("ID de la atraccion a eliminar: "))
-                AtraccionRepo.eliminar_id(id)
+                AtraccionRepo.eliminar_atraccion(id)
             case "4":
                 for atraccion in AtraccionRepo.mostrar_activas():
                     pprint(atraccion.__dict__["__data__"])
             case "5":
-                for atraccion in AtraccionRepo.mostrar_intensidad():
-                    pprint(atraccion.__dict__["__data__"])
-            case "5":
+                # NO ESTA TERMINADO
                 for atraccion in AtraccionRepo.mostrar_intensidad():
                     pprint(atraccion.__dict__["__data__"])
             case "6":
+                # NO ESTA TERMINADO
                 for atraccion in AtraccionRepo.mostrar_duracion():
                     pprint(atraccion.__dict__["__data__"])
             case "7":
@@ -132,17 +133,115 @@ def atracciones():
                 print("Opcion no valida.")
 
 def tickets():
-    pass
-
+    while True:
+        print("--> TICKETS\n" \
+            "\n1. Crear ticket\n" \
+            "\n2. Mostrar tickets\n" \
+            "\n3. Mostrar tickets de un visitante\n" \
+            "\n4. Mostrar tickets de una atraccion\n" \
+            "\n5. Mostrar visitantes con ticket para una atraccion (directa o general)\n"\
+            "\n6. Marcar ticket como 'usado'\n"\
+            "\n7. Mostrar tickets tipo 'colegio' con un precio inferior a 30e\n"\
+            "\n8. Mostrar tickets con descuento de 'estudiante'\n"
+            "\n0. Volver\n"
+        )
+        opcion = input("Elige una opcion: ")
+        match opcion:
+            case "1":
+                id_visitante = int(input("ID de visitante: "))
+                id_atraccion_str = input("Indica el ID de la atraccion o dejalo vacio si es general: ")
+                if id_atraccion_str == "":
+                    id_atraccion = None
+                else:
+                    id_atraccion=int(id_atraccion_str)
+                fecha_visita = input("Fecha de visita (YYYY-MM-DD): ")
+                tipo_ticket = input("Tipo de ticket (general, colegio o empleado): ")
+                fecha_compra = datetime.datetime.now()
+                usado = False
+                fecha_uso = None
+                detalles ={}
+                TicketRepo.crear_ticket(id_visitante,id_atraccion,fecha_compra,fecha_visita,tipo_ticket,usado,fecha_uso,detalles)
+                print("Ticket creado correctamente.")
+            case "2":
+                for ticket in TicketRepo.mostrar_todos():
+                    pprint(ticket.__dict__["__data__"])
+            case "3":
+                id = int(input("ID del visitante: "))
+                for ticket in TicketRepo.mostrar_por_visitante(id):
+                    pprint(ticket.__dict__["__data__"])
+            case "4":
+                id = int(input("ID de la atraccion: "))
+                for ticket in TicketRepo.mostrar_por_atraccion(id):
+                    pprint(ticket.__dict__["__data__"])
+            case "5":
+                # NO ESTA TERMINADO
+                id = int(input("ID de la atraccion: "))
+                for ticket in TicketRepo.mostrar_ticket_visitantes_atraccion(id):
+                    pprint(ticket.__dict__["__data__"])
+            case "6":
+                id = int(input("ID del ticket que quieres marcar como usado: "))
+                TicketRepo.actualizar_uso(id)
+            case "7":
+                for ticket in TicketRepo.mostrar_ticket_colegio():
+                    pprint(ticket.__dict__["__data__"])
+            case "8":
+                for ticket in TicketRepo.mostrar_descuento_estudiante():
+                    pprint(ticket.__dict__["__data__"])
+            case "0":
+                break
+            case _:
+                print("Opcion no valida")
 def opjson():
-    pass
+    while True:
+        print("--> OPERACIONES JSON\n" \
+            "\n1. Cambiar precio de un ticket\n" \
+            "\n2. Eliminar restriccion a un visitante\n" \
+            "\n3. Agregar una nueva caracteristica de una atraccion\n" \
+            "\n4. Agregar una nueva visita al historial de visitas de un visitante\n" \
+            "\n0. Volver"
+        )
+        opcion = input("Elige una opcion: ")
+        match opcion:
+            case "1":
+                break
+            case "2":
+                break
+            case "3":
+                break
+            case "4":
+                break
+            case "0":
+                break
+            case _:
+                print("Opcion no valida")
 
 def consultas_utiles():
-    pass
+    while True:
+        print("--> CONSULTAS UTILES\n" \
+            "\n1. Mostrar visitantes ordenados por cantidad total de tickets comprados (mayor-menor)\n" \
+            "\n2. 5 atracciones mas vendidas (en tickets especificos)\n" \
+            "\n3. Visitantes que han gastado mas de 100e en tickets\n" \
+            "\n4. Actividades compatibles para un visitante\n" \
+            "\n0. Volver"
+        )
+        opcion = input("Elige una opcion: ")
+        match opcion:
+            case "1":
+                break
+            case "2":
+                break
+            case "3":
+                break
+            case "4":
+                break
+            case "0":
+                break
+            case _:
+                print("Opcion no valida")
 
 def main():
     principal()
-    VisitanteRepo.crear_visitante()
+
 
 if __name__ == "__main__":
     inicializar_base([AtraccionModel, VisitanteModel, TicketModel])
