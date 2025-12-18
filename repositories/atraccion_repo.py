@@ -31,16 +31,22 @@ class AtraccionRepo:
         except Exception as e:
             print(f"Error al obtener atracciones 'activas'")
             return None
-    
-    ####### PENDIENTE COMO HACER CON NUMEROS ######
+        
     @staticmethod
     def mostrar_intensidad():
-        pass
+        try:
+            return list(AtraccionModel.select().where(SQL("CAST(detalles->>'intensidad' AS INTEGER) > 7")))
+        except Exception as e:
+            print(f"Error al mostrar las atracciones con intensidad mayor que 7: {e}")
+            return None
 
     @staticmethod
     def mostrar_duracion():
-        pass
-    ##########################################
+        try:
+            return list(AtraccionModel.select().where(SQL("CAST(detalles->>'duracion_segundos' AS INTEGER) > 120")))
+        except Exception as e:
+            print(f"Error al mostrar las atracciones con duracion mayor que 120 segundos: {e}")
+            return None
     
     @staticmethod
     def mostrar_looping_caida():

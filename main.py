@@ -110,11 +110,9 @@ def atracciones():
                 for atraccion in AtraccionRepo.mostrar_activas():
                     pprint(atraccion.__dict__["__data__"])
             case "5":
-                # NO ESTA TERMINADO
                 for atraccion in AtraccionRepo.mostrar_intensidad():
                     pprint(atraccion.__dict__["__data__"])
             case "6":
-                # NO ESTA TERMINADO
                 for atraccion in AtraccionRepo.mostrar_duracion():
                     pprint(atraccion.__dict__["__data__"])
             case "7":
