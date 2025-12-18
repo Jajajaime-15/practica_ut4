@@ -62,23 +62,24 @@ class TicketRepo:
             print(f"Error al obtener los tickets de la atraccion {id_atraccion}: {e}")
             return None
     
-    ############## PENDIENTE ####################
     # Obtener visitantes que tienen ticket para una atracción (directa o general)
     @staticmethod
-    def mostrar_ticket_visitantes_atraccion(id_atraccion):
-        pass
-        #return list(VisitanteModel.select().join(TicketModel).where((TicketModel.atraccion_id=id_atraccion) or (TicketModel.id_atraccion )))
-    #############################################
+    def mostrar_ticket_visitantes_atraccion():
+        try:
+            return list(VisitanteModel.select()
+                        .join(TicketModel, on=(VisitanteModel.id == TicketModel.visitante_id))
+                        .group_by(VisitanteModel.id))
+        except Exception as e:
+            print(f"Error al mostrar los visitantes que tienen un ticket para una atraccion: {e}")
+            return None
 
-    ### REVISAR DA ERROR ###
     @staticmethod
     def mostrar_ticket_colegio():
         try:
-            return list(TicketModel.select().where(TicketModel.tipo_ticket == "colegio") & (TicketModel.detalles_compra["precio"]<30))
+            return list(TicketModel.select().where((TicketModel.tipo_ticket == "colegio") & (SQL("CAST(detalles_compra->>'precio' AS FLOAT) < 30"))))
         except Exception as e:
-            print(f"Error al obtener los tickets de tipo colegio de precion inferior a 30€: {e}")
+            print(f"Error al obtener los tickets de tipo colegio de precio inferior a 30€: {e}")
             return None
-    ###############################
 
     @staticmethod
     def mostrar_descuento_estudiante():
@@ -95,7 +96,6 @@ class TicketRepo:
             if not ticket:
                 print(f"Ticket {id} no encontrado.")
                 return
-            
             ticket.usado = True
             ticket.fecha_uso = datetime.datetime.now()
             ticket.save()
@@ -104,4 +104,3 @@ class TicketRepo:
         except Exception as e:
             print(f"Error al cambiar el estado de uso del ticket {id}: {e}")
             return None
-        
