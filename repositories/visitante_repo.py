@@ -1,6 +1,8 @@
 from peewee import * #type: ignore
 from playhouse import postgres_ext #type: ignore
 from models.visitante_model import VisitanteModel
+from models.ticket_model import TicketModel
+from models.atraccion_model import AtraccionModel
 import json
 
 class VisitanteRepo:
@@ -75,5 +77,34 @@ class VisitanteRepo:
             print(f"Error al eliminar la restriccion del visitante: {e}")
             return None
         
+    #Listar visitantes ordenados por cantidad total de tickets comprados    
+    @staticmethod
+    def visitantes_ordenados_tickets():
+        visitantes_ordenados = list(
+            VisitanteModel.select(VisitanteModel.nombre, fn.COUNT(TicketModel.id).alias('total_tickets'))
+            .join(TicketModel, on=(VisitanteModel.id == TicketModel.visitante_id))
+            .group_by(VisitanteModel.id)
+            .order_by(fn.COUNT(TicketModel.id).desc())
+            .dicts()
+        )
+            
+        return visitantes_ordenados
+    
+    
 
+    
+    #Obtener visitantes que hayan gastado más de 100€ en tickets (suma de detalles_compra→precio)
+    @staticmethod
+    def atracciones_compatibles(visitante_id):
+        resultados = (AtraccionModel
+                    .select()
+                    .join(VisitanteModel)
+                    .where(AtraccionModel.activa == True,
+                            AtraccionModel.tipo == VisitanteModel.preferencias['tipo_favorito'],
+                            AtraccionModel.altura_minima <= VisitanteModel.altura,
+                            VisitanteModel.id == visitante_id)
+                    .dicts())
+        
+        return list(resultados)
+        
     

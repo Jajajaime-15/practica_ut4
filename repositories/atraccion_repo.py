@@ -1,6 +1,7 @@
 from peewee import * #type: ignore
 from playhouse import postgres_ext #type: ignore
 from models.atraccion_model import AtraccionModel
+from models.ticket_model import TicketModel
 import json
 
 class AtraccionRepo:
@@ -111,3 +112,32 @@ class AtraccionRepo:
             return eliminado
         except Exception as e:
             print(f"Error al eliminar la atraccion {e}")
+
+
+    #Obtener las 5 atracciones más vendidas (en tickets específicos)  
+    @staticmethod
+    def atracciones_mas_vendidas():
+    # Contamos cuántos tickets tiene cada atracción
+        atracciones_vendidas = (TicketModel
+                    .select(TicketModel.atraccion_id, 
+                            fn.COUNT(TicketModel.id).alias('total_tickets'))
+                    .where(TicketModel.atraccion_id.is_null(False))  # Solo tickets con atracción
+                    .group_by(TicketModel.atraccion_id)  # Agrupar por atracción
+                    .order_by(fn.COUNT(TicketModel.id).desc())  # Ordenar de mayor a menor
+                    .limit(5)  # Tomar solo los 5 primeros
+                    .dicts())
+        
+        return list(atracciones_vendidas)       
+    
+
+    #Atracciones compatibles para un visitante (Atracciones activas que coincidan en tipo, y donde el usuario cumpla con el mínimo de altura)
+    @staticmethod
+    def atracciones_compatibles(visitante_tipo, visitante_altura):
+        atracciones = (AtraccionModel
+                    .select()
+                    .where((AtraccionModel.activa == True) & 
+                            (AtraccionModel.tipo == visitante_tipo) & 
+                            (AtraccionModel.altura_minima <= visitante_altura))
+                    .dicts())
+        
+        return list(atracciones)
