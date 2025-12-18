@@ -225,19 +225,23 @@ def consultas_utiles():
             "\n1. Mostrar visitantes ordenados por cantidad total de tickets comprados (mayor-menor)\n" \
             "\n2. 5 atracciones mas vendidas (en tickets especificos)\n" \
             "\n3. Visitantes que han gastado mas de 100e en tickets\n" \
-            "\n4. Actividades compatibles para un visitante\n" \
+            "\n4. Atracciones compatibles para un visitante\n" \
             "\n0. Volver"
         )
         opcion = input("Elige una opcion: ")
         match opcion:
             case "1":
-                break
+                for visitante in VisitanteRepo.visitantes_ordenados_tickets():
+                    pprint(visitante.__dict__["__data__"])
             case "2":
-                break
+                for atraccion in AtraccionRepo.atracciones_mas_vendidas():
+                    pprint(atraccion.__dict__["__data__"])
             case "3":
                 break
             case "4":
-                break
+                id = int(input("ID del visitante: "))
+                for atraccion in AtraccionRepo.atracciones_compatibles(id):
+                    pprint(atraccion.__dict__["__data__"])
             case "0":
                 break
             case _:

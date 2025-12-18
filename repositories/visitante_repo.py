@@ -62,27 +62,30 @@ class VisitanteRepo:
     #Listar visitantes ordenados por cantidad total de tickets comprados    
     @staticmethod
     def visitantes_ordenados_tickets():
-        visitantes_ordenados = list(
-            VisitanteModel.select(VisitanteModel.nombre, fn.COUNT(TicketModel.id).alias('total_tickets'))
-            .join(TicketModel, on=(VisitanteModel.id == TicketModel.visitante_id))
-            .group_by(VisitanteModel.id)
-            .order_by(fn.COUNT(TicketModel.id).desc())
-            .dicts()
-        )            
-        return visitantes_ordenados
+        try:
+            return list(
+                VisitanteModel.select(VisitanteModel.nombre, fn.COUNT(TicketModel.id).alias('total_tickets'))
+                .join(TicketModel, on=(VisitanteModel.id == TicketModel.visitante_id))
+                .group_by(VisitanteModel.id)
+                .order_by(fn.COUNT(TicketModel.id).desc())
+            )
+        except Exception as e:
+            print(f"Error al ordenar los visitantes por tickets comprados: {e}")
 
     #Obtener visitantes que hayan gastado más de 100€ en tickets (suma de detalles_compra→precio)
     @staticmethod
-    def atracciones_compatibles(visitante_id):
-        resultados = (AtraccionModel
-                    .select()
-                    .join(VisitanteModel)
-                    .where(AtraccionModel.activa == True,
-                            AtraccionModel.tipo == VisitanteModel.preferencias['tipo_favorito'],
-                            AtraccionModel.altura_minima <= VisitanteModel.altura,
-                            VisitanteModel.id == visitante_id)
-                    .dicts())
-        return list(resultados)
+    def cambiarestaaaaaa(visitante_id): # IMPORTANTE CAMBIAR ESTA JULIO
+        try:
+            return list(
+                AtraccionModel.select()
+                .join(VisitanteModel)
+                .where(AtraccionModel.activa == True and
+                        AtraccionModel.tipo == VisitanteModel.preferencias['tipo_favorito'] and
+                        AtraccionModel.altura_minima <= VisitanteModel.altura and
+                        VisitanteModel.id == visitante_id)
+            )
+        except Exception as e:
+            print(f"Error al buscar las atracciones compatibles con el visitante: {e}")
     
     # Modificaciones en jsonb
     @staticmethod

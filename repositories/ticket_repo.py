@@ -2,6 +2,7 @@ from peewee import * #type: ignore
 from playhouse import postgres_ext #type: ignore
 from models.ticket_model import TicketModel
 from models.visitante_model import VisitanteModel
+from models.atraccion_model import AtraccionModel
 import datetime
 import json
 
