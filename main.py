@@ -172,15 +172,12 @@ def tickets():
                 for ticket in TicketRepo.mostrar_por_atraccion(id):
                     pprint(ticket.__dict__["__data__"])
             case "5":
-                # NO ESTA TERMINADO
-                id = int(input("ID de la atraccion: "))
-                for ticket in TicketRepo.mostrar_ticket_visitantes_atraccion(id):
+                for ticket in TicketRepo.mostrar_ticket_visitantes_atraccion():
                     pprint(ticket.__dict__["__data__"])
             case "6":
                 id = int(input("ID del ticket que quieres marcar como usado: "))
                 TicketRepo.actualizar_uso(id)
             case "7":
-                # REVISAR DA ERROR
                 for ticket in TicketRepo.mostrar_ticket_colegio():
                     pprint(ticket.__dict__["__data__"])
             case "8":

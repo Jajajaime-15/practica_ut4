@@ -231,7 +231,6 @@ def ingesta():
             "fecha_uso": "2024-02-12 10:30:00",
         },
         {
-            # Ticket tipo colegio < 30 con descuento estudiante (para tus consultas)
             "visitante_id": 4,  # David
             "atraccion_id": None,  # general
             "fecha_compra": "2024-03-01 09:00:00",
