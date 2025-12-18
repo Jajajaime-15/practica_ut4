@@ -3,6 +3,7 @@ from models.atraccion_model import AtraccionModel
 from models.ticket_model import TicketModel
 
 def ingesta():
+    # creacion de 5 visitantes variados
     visitantes_data = [
         {
             "nombre": "Laura Sánchez Pérez",
@@ -76,6 +77,7 @@ def ingesta():
         },
     ]
 
+    # creacion de 5 atracciones variadas
     atracciones_data = [
         {
             "nombre": "Dragón de Fuego",
@@ -169,6 +171,7 @@ def ingesta():
         },
     ]
 
+    # creacion de 5 tickets variados
     tickets_data = [
         {
             "visitante_id": 1,  # Laura
@@ -247,6 +250,7 @@ def ingesta():
         },
     ]
 
+    # se realizan las inserciones de todos los visitantes, atracciones y tickets
     VisitanteModel.insert_many(visitantes_data).execute()
     AtraccionModel.insert_many(atracciones_data).execute()
     TicketModel.insert_many(tickets_data).execute()

@@ -9,8 +9,8 @@ class AtraccionModel(BaseModel):
     altura_minima = IntegerField()
     detalles= postgres_ext.BinaryJSONField(default={
         "duracion_segundos" : 60,
-        "capacidad_por_turno" :24,
-        "intensidad":8,
+        "capacidad_por_turno" : 24,
+        "intensidad" : 8,
         "caracteristicas" : ["looping","caida_libre","giro_360"],
         "horarios" : {
             "apertura" : "10:00",
@@ -18,5 +18,5 @@ class AtraccionModel(BaseModel):
             "mantenimiento" : ["14:00-15:00"],
         }
     })
-    activa = BooleanField(default=True)
-    fecha_inauguracion = DateField(default = datetime.now)
+    activa = BooleanField(default=True) # para que cuente como activa en caso de que no se diga lo contrario
+    fecha_inauguracion = DateField(default = datetime.now) # para que sea la fecha del momento de la creacion si no se especifica

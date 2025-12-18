@@ -7,7 +7,7 @@ class VisitanteModel(BaseModel):
     nombre = TextField()
     email = TextField(unique=True)
     altura = IntegerField()
-    fecha_registro = DateTimeField(default=datetime.now)
+    fecha_registro = DateTimeField(default=datetime.now) # para que sea la fecha del momento de la creacion si no se especifica
     preferencias = postgres_ext.BinaryJSONField(null=True, default={
         "tipo_favorito": "extrema",
         "restricciones": ["problemas_cardiacos"],
