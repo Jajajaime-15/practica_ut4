@@ -32,19 +32,6 @@ class TicketRepo:
         except Exception as e:
             print(f"Error buscando el ticket con id {id}: {e}")
             return None
-        
-    @staticmethod
-    def cambiar_precio_ticket(ticket_id, nuevo_precio):
-        try:
-            ticket = TicketRepo.buscar_id(ticket_id) # buscamos el ticket que quiere cambiar el usuario
-            if ticket: # si existe cambiaremos el precio al que ha introducido el usuario
-                ticket.detalles_compra["precio"] = nuevo_precio # modificacion del precio almacenado en el jsonb
-                ticket.save()
-            else:
-                print("El ticket introducido no existe")
-        except Exception as e:
-            print(f"Error al cambiar el precio del ticket {ticket_id}: {e}")
-            return None
 
     @staticmethod
     def mostrar_por_visitante(id_visitante):
@@ -103,4 +90,18 @@ class TicketRepo:
             return ticket
         except Exception as e:
             print(f"Error al cambiar el estado de uso del ticket {id}: {e}")
+            return None
+
+    # Modificaciones en jsonb
+    @staticmethod
+    def cambiar_precio_ticket(ticket_id, nuevo_precio):
+        try:
+            ticket = TicketRepo.buscar_id(ticket_id) # buscamos el ticket que quiere cambiar el usuario
+            if ticket: # si existe cambiaremos el precio al que ha introducido el usuario
+                ticket.detalles_compra["precio"] = nuevo_precio # modificacion del precio almacenado en el jsonb
+                ticket.save()
+            else:
+                print("El ticket introducido no existe")
+        except Exception as e:
+            print(f"Error al cambiar el precio del ticket {ticket_id}: {e}")
             return None

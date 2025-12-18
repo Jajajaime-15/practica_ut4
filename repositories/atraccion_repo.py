@@ -71,25 +71,7 @@ class AtraccionRepo:
         except Exception as e:
             print(f"Error buscando la atraccion con id {id}: {e}")
             return None
-    
-    @staticmethod
-    def anyadir_caracteristica_atraccion(atraccion_id, caracteristica):
-        try:
-            atraccion = AtraccionRepo.buscar_id(atraccion_id)
-            if atraccion: # en caso de existir la atraccion introducida
-                caracteristicas = atraccion.detalles["caracteristicas"]
-                if caracteristica not in caracteristicas: # en caso de no estar la caracteristica en la lista de caracteristicas de la atraccion
-                    caracteristicas.append(caracteristica) # anyadirmos la caracteristica a la lista almacenada en el jsonb
-                    atraccion.detalles["caracteristicas"] = caracteristicas # asignacion de la lista modificada 
-                    atraccion.save()
-                else:
-                    print("La caracteristica indicada ya se encuentra entre las caracteristicas de la atraccion introducida")
-            else:
-                print("La atraccion introducida no existe")
-        except Exception as e:
-            print(f"Error al anyadir la caracteristica a la atraccion: {e}")
-            return None
-
+        
     @staticmethod
     def cambiar_estado(id):
         try:
@@ -119,7 +101,6 @@ class AtraccionRepo:
         except Exception as e:
             print(f"Error al eliminar la atraccion {e}")
 
-
     #Obtener las 5 atracciones más vendidas (en tickets específicos)  
     @staticmethod
     def atracciones_mas_vendidas():
@@ -132,10 +113,8 @@ class AtraccionRepo:
                     .order_by(fn.COUNT(TicketModel.id).desc())  # Ordenar de mayor a menor
                     .limit(5)  # Tomar solo los 5 primeros
                     .dicts())
-        
         return list(atracciones_vendidas)       
     
-
     #Atracciones compatibles para un visitante (Atracciones activas que coincidan en tipo, y donde el usuario cumpla con el mínimo de altura)
     @staticmethod
     def atracciones_compatibles(visitante_tipo, visitante_altura):
@@ -145,5 +124,23 @@ class AtraccionRepo:
                             (AtraccionModel.tipo == visitante_tipo) & 
                             (AtraccionModel.altura_minima <= visitante_altura))
                     .dicts())
-        
         return list(atracciones)
+    
+    # Modificaciones en jsonb
+    @staticmethod
+    def anyadir_caracteristica_atraccion(atraccion_id, caracteristica):
+        try:
+            atraccion = AtraccionRepo.buscar_id(atraccion_id)
+            if atraccion: # en caso de existir la atraccion introducida
+                caracteristicas = atraccion.detalles["caracteristicas"]
+                if caracteristica not in caracteristicas: # en caso de no estar la caracteristica en la lista de caracteristicas de la atraccion
+                    caracteristicas.append(caracteristica) # anyadiremos la caracteristica a la lista almacenada en el jsonb
+                    atraccion.detalles["caracteristicas"] = caracteristicas # asignacion de la lista modificada 
+                    atraccion.save()
+                else:
+                    print("La caracteristica indicada ya se encuentra entre las caracteristicas de la atraccion introducida")
+            else:
+                print("La atraccion introducida no existe")
+        except Exception as e:
+            print(f"Error al anyadir la caracteristica a la atraccion: {e}")
+            return None

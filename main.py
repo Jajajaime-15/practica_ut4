@@ -57,7 +57,7 @@ def visitantes():
                 email = input("Email: ")
                 altura = input("Altura: ")
                 preferencias = {}
-                VisitanteRepo.crear_visitante(nombre, email, altura)
+                VisitanteRepo.crear_visitante(nombre, email, altura, preferencias)
                 print("Visitante creado correctamente.")
             case "2":
                 for visitante in VisitanteRepo.mostrar_todos():
@@ -197,13 +197,23 @@ def opjson():
         opcion = input("Elige una opcion: ")
         match opcion:
             case "1":
-                break
+                ticket_id = int(input("ID del ticket al que quieres cambiarle el precio: "))
+                nuevo_precio = float(input("Introduce el nuevo precio del ticket (decimal con punto en vez de coma): "))
+                TicketRepo.cambiar_precio_ticket(ticket_id, nuevo_precio)
             case "2":
-                break
+                visitante_id = int(input("ID del visitante al que quieres eliminar una restriccion: "))
+                restriccion = input("Introduce el nombre de la restriccion a eliminar (si es mas de una palabra la separacion sera '_'): ")
+                VisitanteRepo.eliminar_restriccion_visitante(visitante_id, restriccion)
             case "3":
-                break
+                atraccion_id = int(input("ID de la atraccion a la que quieras anyadir una caracteristica: "))
+                caracteristica = input("Introduce el nombre de la nueva caracteristica: ")
+                AtraccionRepo.anyadir_caracteristica_atraccion(atraccion_id, caracteristica)
             case "4":
-                break
+                visitante_id = int(input("ID del visitante al que quieres agregar una visita: "))
+                fecha = input("Fecha de visita (YYYY-MM-DD): ")
+                atracciones = int(input("Numero de atracciones visitadas: "))
+                visita = {"fecha" : fecha, "atracciones_visitadas" : atracciones}
+                VisitanteRepo.anyadir_visita(visitante_id, visita)
             case "0":
                 break
             case _:
@@ -234,10 +244,9 @@ def consultas_utiles():
                 print("Opcion no valida")
 
 def main():
-    principal()
-
+    principal() # metodo que contiene el menu principal
 
 if __name__ == "__main__":
-    inicializar_base([AtraccionModel, VisitanteModel, TicketModel])
-    ingesta()
-    main()
+    inicializar_base([AtraccionModel, VisitanteModel, TicketModel]) # borramos y creamos las tablas
+    ingesta() # introducimos los datos de la ingesta en las tablas
+    main() # llamada al metodo principal para ejecutar el programa
