@@ -6,7 +6,7 @@ from models.atraccion_model import AtraccionModel
 from datetime import datetime
 
 class TicketModel(BaseModel):
-    visitante_id = ForeignKeyField(VisitanteModel, backref="tickets")
+    visitante_id = ForeignKeyField(VisitanteModel, backref="tickets", on_delete="cascade")
     atraccion_id = ForeignKeyField(AtraccionModel, backref="tickets", null=True)
     fecha_compra = DateTimeField(default=datetime.now) # para que sea la fecha del momento de la creacion si no se especifica
     fecha_visita = DateField()
