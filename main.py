@@ -12,6 +12,7 @@ from repositories.ticket_repo import TicketRepo
 from repositories.visitante_repo import VisitanteRepo
 from ingesta import ingesta
 
+# menu principal, nos permitira acceder a las operaciones de visitantes, atracciones y tickets, ademas de las modificaciones jsonb y las consultas utiles
 def principal():
     while True:
         print("--> MENU PARQUE DE ATRACCIONES <-- \n"\
@@ -21,7 +22,7 @@ def principal():
             "\n4. Operaciones JSON\n"\
             "\n5. Consultas utiles\n"\
             "\n0. Salir\n"
-            )
+        )
         opcion = input("Elige una opcion: ")
         match opcion:
             case "1":
@@ -34,29 +35,30 @@ def principal():
                 opjson()
             case "5":
                 consultas_utiles()
-            case "0":
+            case "0": # finalizar programa
                 print("\nSaliendo del programa...")
                 break
             case _:
                 print("\nOpcion no valida\n")
 
+# menu que nos permitira realizar todas las operaciones relacionadas con los visitantes
 def visitantes():
     while True:
         print("\n--> VISITANTES\n" \
-        "\n1. Crear visitante\n" \
-        "\n2. Mostrar visitantes\n" \
-        "\n3. Eliminar visitante\n" \
-        "\n4. Mostrar visitantes con preferencia por las atracciones 'extremas'\n" \
-        "\n5. Mostrar visitantes con problemas cardiacos\n" \
-        "\n0. Volver\n"
+            "\n1. Crear visitante\n" \
+            "\n2. Mostrar visitantes\n" \
+            "\n3. Eliminar visitante\n" \
+            "\n4. Mostrar visitantes con preferencia por las atracciones 'extremas'\n" \
+            "\n5. Mostrar visitantes con problemas cardiacos\n" \
+            "\n0. Volver\n"
         )
         opcion = input("Elige una opcion: ")
         match opcion:
-            case "1":
+            case "1": # crear
                 nombre = input("Nombre: ")
                 email = input("Email: ")
                 altura = input("Altura: ")
-                tipo_fav = input("Indica si tienes un tipo de atraccion favorita (extrema,familia,infantil,acuatica): ")
+                tipo_fav = input("Indica si tienes un tipo de atraccion favorita [extrema, familia, infantil, acuatica]: ")
 
                 restricciones_txt = input("Indica si tienes algun tipo de restriccion, si es mas de una separa con ',': ")
                 restricciones = [] # lista de restricciones 
@@ -73,28 +75,29 @@ def visitantes():
                     preferencias = {
                         "tipo_favorito" : tipo_fav,
                         "restricciones" : restricciones,
-                        "historial_visitas" : []
+                        "historial_visitas" : [] # establecemos las visitas vacias a la hora de crear un visitante, para anyadirlas en las modificaciones
                     }
 
                 VisitanteRepo.crear_visitante(nombre, email, altura, preferencias)
                 print("Visitante creado correctamente.")
-            case "2":
+            case "2": # mostrar todos
                 for visitante in VisitanteRepo.mostrar_todos():
-                    pprint(visitante.__dict__["__data__"])
-            case "3":
+                    pprint(visitante.__dict__["__data__"]) # la mayoria de consultas seran leidas y mostradas de esta forma
+            case "3": # eliminar
                 id = int(input("ID del visitante a eliminar: "))
-                VisitanteRepo.eliminar_visitante(id)
+                VisitanteRepo.eliminar_visitante(id) # se eliminaran tambien los tickets relacionados con el visitante
             case "4":
                 for visitante in VisitanteRepo.mostrar_extremas():
                     pprint(visitante.__dict__["__data__"])
             case "5":
                 for visitante in VisitanteRepo.mostrar_cardio():
                     pprint(visitante.__dict__["__data__"])
-            case "0":
+            case "0": # regresar al menu anterior
                 break
             case _:
                 print("Opcion no valida.")
 
+# menu que nos permitira realizar todas las operaciones relacionadas con las atracciones
 def atracciones():
     while True:
         print("\n--> ATRACCIONES\n" \
@@ -111,7 +114,7 @@ def atracciones():
         )
         opcion = input("Elige una opcion: ")
         match opcion:
-            case "1":
+            case "1": # crear
                 nombre = input("Nombre: ")
                 tipo = input("Tipo: ")
                 altura_min = int(input("Altura minima (cm): "))
@@ -142,23 +145,23 @@ def atracciones():
                             horarios_mante.append(mante)
 
                 detalles = {
-                        "duracion_segundos": duracion,
-                        "capacidad_por_turno": capacidad,
-                        "intensidad": intensidad,
-                        "caracteristicas": lista_caracteristicas,
-                        "horarios":{
-                            "apertura":apertura,
-                            "cierre": cierre,
-                            "mantenimiento": horarios_mante
-                        }
+                    "duracion_segundos": duracion,
+                    "capacidad_por_turno": capacidad,
+                    "intensidad": intensidad,
+                    "caracteristicas": lista_caracteristicas,
+                    "horarios":{
+                        "apertura":apertura,
+                        "cierre": cierre,
+                        "mantenimiento": horarios_mante
                     }
+                }
                 
                 AtraccionRepo.crear_atraccion(nombre, tipo, altura_min, detalles)
-                print("Atraccion creada correctamente.")
-            case "2":
+                print("Atraccion creada correctamente")
+            case "2": # mostrar todos
                 for atraccion in AtraccionRepo.mostrar_todas():
                     pprint(atraccion.__dict__["__data__"])
-            case "3":
+            case "3": # eliminar
                 id = int(input("ID de la atraccion a eliminar: "))
                 AtraccionRepo.eliminar_atraccion(id)
             case "4":
@@ -176,14 +179,15 @@ def atracciones():
             case "8":
                 for atraccion in AtraccionRepo.mostrar_mantenimiento_programado():
                     pprint(atraccion.__dict__["__data__"])
-            case "9":
+            case "9": # actualizar
                 id = int(input("ID de la atraccion que quieres cambiar el estado: "))
-                AtraccionRepo.cambiar_estado(id)
-            case "0":
+                AtraccionRepo.cambiar_estado(id) # algunas operaciones no requieren ser recorridas en el main 
+            case "0": # regresar
                 break
             case _:
                 print("Opcion no valida.")
 
+# menu que nos permitira realizar todas las operaciones relacionadas con los tickets
 def tickets():
     while True:
         print("\n--> TICKETS\n" \
@@ -199,11 +203,11 @@ def tickets():
         )
         opcion = input("Elige una opcion: ")
         match opcion:
-            case "1":
+            case "1": # crear
                 id_visitante = int(input("ID de visitante: "))
                 id_atraccion_str = input("Indica el ID de la atraccion o dejalo vacio si es general: ")
                 if id_atraccion_str == "":
-                    id_atraccion = None
+                    id_atraccion = None # el id de atraccion puede ser nulo, lo que indicaria que es un ticket general
                 else:
                     id_atraccion=int(id_atraccion_str)
 
@@ -240,8 +244,8 @@ def tickets():
                 detalles_compra["metodo_pago"] = metodo_pago
 
                 TicketRepo.crear_ticket(id_visitante, id_atraccion, fecha_visita, tipo_ticket, detalles_compra)
-                print("Ticket creado correctamente.")
-            case "2":
+                print("Ticket creado correctamente")
+            case "2": # mostrar todos
                 for ticket in TicketRepo.mostrar_todos():
                     pprint(ticket.__dict__["__data__"])
             case "3":
@@ -255,7 +259,7 @@ def tickets():
             case "5":
                 for ticket in TicketRepo.mostrar_ticket_visitantes_atraccion():
                     pprint(ticket.__dict__["__data__"])
-            case "6":
+            case "6": # actualizar
                 id = int(input("ID del ticket que quieres marcar como usado: "))
                 TicketRepo.actualizar_uso(id)
             case "7":
@@ -264,10 +268,12 @@ def tickets():
             case "8":
                 for ticket in TicketRepo.mostrar_descuento_estudiante():
                     pprint(ticket.__dict__["__data__"])
-            case "0":
+            case "0": # regresar
                 break
             case _:
                 print("Opcion no valida")
+
+# menu que alberga las operaciones de modificaciones en jsonb
 def opjson():
     while True:
         print("\n--> OPERACIONES JSON\n" \
@@ -279,59 +285,60 @@ def opjson():
         )
         opcion = input("Elige una opcion: ")
         match opcion:
-            case "1":
+            case "1": # cambiar el precio de un ticket
                 ticket_id = int(input("ID del ticket al que quieres cambiarle el precio: "))
                 nuevo_precio = float(input("Introduce el nuevo precio del ticket (decimal con punto en vez de coma): "))
                 TicketRepo.cambiar_precio_ticket(ticket_id, nuevo_precio)
-            case "2":
+            case "2": # eliminar una restriccion a un visitante
                 visitante_id = int(input("ID del visitante al que quieres eliminar una restriccion: "))
                 restriccion = input("Introduce el nombre de la restriccion a eliminar (si es mas de una palabra la separacion sera '_'): ")
                 VisitanteRepo.eliminar_restriccion_visitante(visitante_id, restriccion)
-            case "3":
+            case "3": # anyadir caracteristica a la lista de caracteristicas de una atraccion
                 atraccion_id = int(input("ID de la atraccion a la que quieras anyadir una caracteristica: "))
                 caracteristica = input("Introduce el nombre de la nueva caracteristica: ")
                 AtraccionRepo.anyadir_caracteristica_atraccion(atraccion_id, caracteristica)
-            case "4":
+            case "4": # anyadir una visita al historial de visitas de un visitante
                 visitante_id = int(input("ID del visitante al que quieres agregar una visita: "))
                 fecha = input("Fecha de visita (YYYY-MM-DD): ")
                 atracciones = int(input("Numero de atracciones visitadas: "))
                 visita = {"fecha" : fecha, "atracciones_visitadas" : atracciones}
                 VisitanteRepo.anyadir_visita(visitante_id, visita)
-            case "0":
+            case "0": # regresar
                 break
             case _:
                 print("Opcion no valida")
 
+# menu que dispone el apartado de consultas utiles
 def consultas_utiles():
     while True:
         print("\n--> CONSULTAS UTILES\n" \
-            "\n1. Mostrar visitantes ordenados por cantidad total de tickets comprados (mayor-menor)\n" \
+            "\n1. Mostrar visitantes ordenados por cantidad total de tickets comprados (descendiente)\n" \
             "\n2. 5 atracciones mas vendidas (en tickets especificos)\n" \
-            "\n3. Visitantes que han gastado mas de 100e en tickets\n" \
+            "\n3. Visitantes que han gastado mas de 100€ en tickets\n" \
             "\n4. Atracciones compatibles para un visitante\n" \
             "\n0. Volver"
         )
         opcion = input("Elige una opcion: ")
         match opcion:
-            case "1":
+            case "1": # visitantes ordenados por cantidad total de tickets comprados (descendiente)
                 for visitante in VisitanteRepo.visitantes_ordenados_tickets():
                     pprint(visitante.__dict__["__data__"])
                     print(f"Total tickets: {visitante.total_tickets}")
                     #print(f"Nombre: {visitante.nombre} - Tickets comprados: {visitante.total_tickets}")
-            case "2":
+            case "2": # 5 atracciones mas vendidas (en tickets especificos)
                 for atraccion in AtraccionRepo.atracciones_mas_vendidas():
                     pprint(atraccion.__dict__["__data__"])
                     print(f"Total tickets: {atraccion.total_tickets}")
                     #print(f"Atraccion: {atraccion.id} - Tickets comprados: {atraccion.total_tickets}")
-            case "3":
+            case "3": # visitantes que han gastado mas de 100€ en tickets
                 for visitante in VisitanteRepo.visitantes_gastado_tickets():
                     pprint(visitante.__dict__["__data__"])
                     print(f"Total tickets: {visitante.gasto_total}")
-            case "4":
+            case "4": # atracciones compatibles para un visitante
                 id = int(input("ID del visitante: "))
                 for atraccion in AtraccionRepo.atracciones_compatibles(id):
                     pprint(atraccion.__dict__["__data__"])
-            case "0":
+            case "0": # regresar
                 break
             case _:
                 print("Opcion no valida")
