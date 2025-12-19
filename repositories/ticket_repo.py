@@ -10,6 +10,7 @@ class TicketRepo:
     @staticmethod
     def crear_ticket(visitante_id, atraccion_id, fecha_visita, tipo_ticket, detalles_compra_json=None):
         try:
+            # creamos un ticket nuevo, teniendo en cuenta si tiene informacion en detalles o no
             if detalles_compra_json:
                 return TicketModel.create(visitante_id=visitante_id, atraccion_id=atraccion_id, fecha_visita=fecha_visita, tipo_ticket=tipo_ticket, detalles_compra=detalles_compra_json)
             else:
@@ -21,6 +22,7 @@ class TicketRepo:
     @staticmethod
     def mostrar_todos():
         try:
+            # select para mostrar todos los tickets
             return list(TicketModel.select())
         except Exception as e:
             print(f"Error al obtener los tickets: {e}")
@@ -37,6 +39,7 @@ class TicketRepo:
     @staticmethod
     def mostrar_por_visitante(id_visitante):
         try:
+            # obtenemos todos los ticket del visitante que coincida con el id del visitante indicado
             return list(TicketModel.select().where(TicketModel.visitante_id==id_visitante))
         except Exception as e:
             print(f"Error al obtener los tickets del visitante con id:{id_visitante}: {e}")
@@ -45,6 +48,7 @@ class TicketRepo:
     @staticmethod
     def mostrar_por_atraccion(id_atraccion):    
         try:
+            # obtenemos todos los ticket para una atraccion que coincida con el id de la atraccion indicado
             return list(TicketModel.select().where(TicketModel.atraccion_id==id_atraccion))
         except Exception as e:
             print(f"Error al obtener los tickets de la atraccion {id_atraccion}: {e}")
@@ -54,6 +58,7 @@ class TicketRepo:
     @staticmethod
     def mostrar_ticket_visitantes_atraccion():
         try:
+            # obtenemos los visitantes que minimo tienen un ticket haciendo JOIN con TicketModel y agrupando por el id de visitante
             return list(VisitanteModel.select()
                         .join(TicketModel, on=(VisitanteModel.id == TicketModel.visitante_id))
                         .group_by(VisitanteModel.id))
@@ -80,12 +85,15 @@ class TicketRepo:
     @staticmethod
     def actualizar_uso(id):
         try:
+            # utilizamos el metodo de buscar por id un ticket
             ticket = TicketRepo.buscar_id(id)
             if not ticket:
                 print(f"Ticket {id} no encontrado.")
                 return
+            # cambiamos el estado de usado a True y la fecha de uso a la actual
             ticket.usado = True
             ticket.fecha_uso = datetime.datetime.now()
+            # guardamos los cambios
             ticket.save()
             print(f"El uso del ticket {id} se ha cambiado a {ticket.usado}")
             return ticket

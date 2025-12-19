@@ -9,6 +9,7 @@ class VisitanteRepo:
     @staticmethod
     def crear_visitante(nombre, email, altura,preferencias_json=None):
         try:
+            # creamos un visitante nuevo, teniendo en cuenta si tiene informacion en preferencias o no
             if preferencias_json:
                 return VisitanteModel.create(nombre=nombre, email=email, altura=altura, preferencias=preferencias_json)
             else:
@@ -20,6 +21,7 @@ class VisitanteRepo:
     @staticmethod
     def mostrar_todos():
         try:
+            # select para mostrar todos los tickets
             return list(VisitanteModel.select())
         except Exception as e:
             print(f"Error al obtener los visitantes: {e}")
@@ -51,8 +53,10 @@ class VisitanteRepo:
     @staticmethod
     def eliminar_visitante(id):
         try:
+            # pedimos confirmacion al usuario antes de eliminar definitivamente un visitante
             confirmar = input("Estas seguro de querer eliminar al visitante? Se eliminaran tambien sus tickets [s/n]").strip()
             if confirmar == "s" or confirmar == "si":
+                # hacemos un delete buscando por el id
                 query = VisitanteModel.delete().where(VisitanteModel.id==id)
                 eliminado = query.execute()
                 if eliminado == 0:

@@ -9,6 +9,7 @@ class AtraccionRepo:
     @staticmethod
     def crear_atraccion(nombre, tipo, altura_minima, detalles_json = None):
         try:
+            # creamos una atraccion nueva, teniendo en cuenta si tiene informacion en detalles o no
             if detalles_json:
                 return AtraccionModel.create(nombre=nombre, tipo=tipo, altura_minima=altura_minima, detalles=detalles_json)
             else:
@@ -20,6 +21,7 @@ class AtraccionRepo:
     @staticmethod
     def mostrar_todas():
         try:
+            # select para mostrar todas las atracciones
             return list(AtraccionModel.select())
         except Exception as e:
             print(f"Error al obtener las atracciones")
@@ -28,6 +30,7 @@ class AtraccionRepo:
     @staticmethod
     def mostrar_activas():
         try:
+            # mostramos solo las atracciones con el campo 'activa' sea True
             return list(AtraccionModel.select().where(AtraccionModel.activa == True))
         except Exception as e:
             print(f"Error al obtener atracciones 'activas'")
@@ -36,6 +39,7 @@ class AtraccionRepo:
     @staticmethod
     def mostrar_intensidad():
         try:
+            # convertimos la intensidad del JSON a integer usando CAST en SQL y poder comparar el valor que sea mayor que 7
             return list(AtraccionModel.select().where(SQL("CAST(detalles->>'intensidad' AS INTEGER) > 7")))
         except Exception as e:
             print(f"Error al mostrar las atracciones con intensidad mayor que 7: {e}")
@@ -44,6 +48,7 @@ class AtraccionRepo:
     @staticmethod
     def mostrar_duracion():
         try:
+            # convertimos la duracion_segundos del JSON a integer usando CAST en SQL y poder comparar el valor que sea mayor que 120
             return list(AtraccionModel.select().where(SQL("CAST(detalles->>'duracion_segundos' AS INTEGER) > 120")))
         except Exception as e:
             print(f"Error al mostrar las atracciones con duracion mayor que 120 segundos: {e}")
@@ -52,6 +57,7 @@ class AtraccionRepo:
     @staticmethod
     def mostrar_looping_caida():
         try:
+            # para obtener las atracciones que tienen incluidas en sus caracteristicas looping y caida libre, usamos contains sobre el JSON
             return list(AtraccionModel.select().where(AtraccionModel.detalles["caracteristicas"].contains(["looping"]) & AtraccionModel.detalles["caracteristicas"].contains(["caida_libre"])))
         except Exception as e:
             print(f"Error al obtener atracciones con 'caida libre' y 'looping':{e}")
@@ -77,14 +83,17 @@ class AtraccionRepo:
     @staticmethod
     def cambiar_estado(id):
         try:
+            # utilizamos el metodo de buscar por id una atraccion
             atraccion = AtraccionRepo.buscar_id(id)
             if not atraccion:
                 print(f"Atraccion con id {id} no encontrada.")
                 return
+            # cambiamos el estado de la atraccion, si esta a True la pasamos a False o al reves
             if atraccion.activa:
                 atraccion.activa = False
             else:
                 atraccion.activa = True
+            # guardamos el cambio
             atraccion.save()
             print(f"El estado de la atraccion {id} se ha cambiado a {atraccion.activa}")
             return atraccion
@@ -95,8 +104,10 @@ class AtraccionRepo:
     @staticmethod
     def eliminar_atraccion(id):
         try:
+            # pedimos confirmacion al usuario antes de eliminar definitivamente la atraccion
             confirmar = input("Estas seguro de querer eliminar la atraccion? [s/n]").strip()
             if confirmar == "s" or confirmar == "si":
+                # hacemos un delete buscando por el id
                 query = AtraccionModel.delete().where(AtraccionModel.id==id)
                 eliminado = query.execute()
                 if eliminado == 0:
