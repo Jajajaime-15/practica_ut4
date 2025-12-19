@@ -84,7 +84,6 @@ def visitantes():
             case "3":
                 id = int(input("ID del visitante a eliminar: "))
                 VisitanteRepo.eliminar_visitante(id)
-                print("Visitante eliminado correctamente")
             case "4":
                 for visitante in VisitanteRepo.mostrar_extremas():
                     pprint(visitante.__dict__["__data__"])

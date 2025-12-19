@@ -51,11 +51,16 @@ class VisitanteRepo:
     @staticmethod
     def eliminar_visitante(id):
         try:
-            query = VisitanteModel.delete().where(VisitanteModel.id==id)
-            eliminado = query.execute()
-            if eliminado == 0:
-                print(f"No hay ningun visitante con el id {id}")
-            return eliminado
+            confirmar = input("Estas seguro de querer eliminar al visitante? Se eliminaran tambien sus tickets [s/n]").strip()
+            if confirmar == "s" or confirmar == "si":
+                query = VisitanteModel.delete().where(VisitanteModel.id==id)
+                eliminado = query.execute()
+                if eliminado == 0:
+                    print(f"No hay ningun visitante con el id {id}")
+                else:
+                    print("Visitante eliminado correctamente")
+            else:
+                print("Se ha cancelado la operacion de eliminacion")
         except Exception as e:
             print(f"Error al eliminar al visitante con id {id}: {e}")
         

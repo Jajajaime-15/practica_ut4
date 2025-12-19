@@ -95,11 +95,16 @@ class AtraccionRepo:
     @staticmethod
     def eliminar_atraccion(id):
         try:
-            query = AtraccionModel.delete().where(AtraccionModel.id==id)
-            eliminado = query.execute()
-            if eliminado == 0:
-                print(f"No se encontro la atraccion con id: {id}")
-            return eliminado
+            confirmar = input("Estas seguro de querer eliminar la atraccion? [s/n]").strip()
+            if confirmar == "s" or confirmar == "si":
+                query = AtraccionModel.delete().where(AtraccionModel.id==id)
+                eliminado = query.execute()
+                if eliminado == 0:
+                    print(f"No se encontro la atraccion con id: {id}")
+                else:
+                    print("Atraccion eliminada correctamente")
+            else:
+                print("Se ha cancelado la operacion de eliminacion")
         except Exception as e:
             print(f"Error al eliminar la atraccion {e}")
 
