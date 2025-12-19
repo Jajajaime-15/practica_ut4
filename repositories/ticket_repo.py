@@ -31,6 +31,7 @@ class TicketRepo:
     @staticmethod
     def buscar_id(id):
         try:
+            # metodo para poder obtener el id del ticket en cualquier operacion que nos resulte necesario
             return TicketModel.get(TicketModel.id == id)
         except Exception as e:
             print(f"Error buscando el ticket con id {id}: {e}")
@@ -54,14 +55,16 @@ class TicketRepo:
             print(f"Error al obtener los tickets de la atraccion {id_atraccion}: {e}")
             return None
     
-    # Obtener visitantes que tienen ticket para una atracción (directa o general)
+    # obtener visitantes que tienen ticket para una atracción (directa o general)
     @staticmethod
     def mostrar_ticket_visitantes_atraccion():
         try:
             # obtenemos los visitantes que minimo tienen un ticket haciendo JOIN con TicketModel y agrupando por el id de visitante
-            return list(VisitanteModel.select()
-                        .join(TicketModel, on=(VisitanteModel.id == TicketModel.visitante_id))
-                        .group_by(VisitanteModel.id))
+            return list(
+                VisitanteModel.select()
+                .join(TicketModel, on=(VisitanteModel.id == TicketModel.visitante_id))
+                .group_by(VisitanteModel.id)
+            )
         except Exception as e:
             print(f"Error al mostrar los visitantes que tienen un ticket para una atraccion: {e}")
             return None
@@ -69,6 +72,7 @@ class TicketRepo:
     @staticmethod
     def mostrar_ticket_colegio():
         try:
+            # para poder identificar los precios debemos realizar un casting dentro del propio sql, convirtiendolo en decimal
             return list(TicketModel.select().where((TicketModel.tipo_ticket == "colegio") & (SQL("CAST(detalles_compra->>'precio' AS FLOAT) < 30"))))
         except Exception as e:
             print(f"Error al obtener los tickets de tipo colegio de precio inferior a 30€: {e}")
@@ -101,7 +105,7 @@ class TicketRepo:
             print(f"Error al cambiar el estado de uso del ticket {id}: {e}")
             return None
 
-    # Modificaciones en jsonb
+    # modificaciones en jsonb
     @staticmethod
     def cambiar_precio_ticket(ticket_id, nuevo_precio):
         try:

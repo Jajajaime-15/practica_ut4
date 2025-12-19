@@ -29,6 +29,7 @@ class VisitanteRepo:
     @staticmethod
     def buscar_id(id):
         try:
+            # metodo para poder obtener el id del visitante en cualquier operacion que nos resulte necesario
             return VisitanteModel.get(VisitanteModel.id == id)
         except Exception as e:
             print(f"Error buscando el visitante con id {id}: {e}")
@@ -59,7 +60,7 @@ class VisitanteRepo:
                 # hacemos un delete buscando por el id
                 query = VisitanteModel.delete().where(VisitanteModel.id==id)
                 eliminado = query.execute()
-                if eliminado == 0:
+                if eliminado == 0:# en caso de no existir el visitante
                     print(f"No hay ningun visitante con el id {id}")
                 else:
                     print("Visitante eliminado correctamente")
@@ -68,7 +69,7 @@ class VisitanteRepo:
         except Exception as e:
             print(f"Error al eliminar al visitante con id {id}: {e}")
         
-    #Listar visitantes ordenados por cantidad total de tickets comprados    
+    # listar visitantes ordenados por cantidad total de tickets comprados    
     @staticmethod
     def visitantes_ordenados_tickets():
         try:
@@ -81,7 +82,7 @@ class VisitanteRepo:
         except Exception as e:
             print(f"Error al ordenar los visitantes por tickets comprados: {e}")
 
-    #Obtener visitantes que hayan gastado más de 100€ en tickets (suma de detalles_compra→precio)
+    # obtener visitantes que hayan gastado más de 100€ en tickets (suma de detalles_compra→precio)
     @staticmethod
     def visitantes_gastado_tickets(): 
         try:
@@ -89,7 +90,8 @@ class VisitanteRepo:
                 VisitanteModel.select(VisitanteModel.nombre, fn.SUM(SQL("CAST(detalles_compra->>'precio' AS DECIMAL)")).alias('gasto_total'))
                   .join(TicketModel, on=(TicketModel.visitante_id == VisitanteModel.id))
                   .group_by(VisitanteModel.id) 
-                  .having(SQL("SUM(CAST(detalles_compra->>'precio' AS DECIMAL))") > 100))
+                  .having(SQL("SUM(CAST(detalles_compra->>'precio' AS DECIMAL))") > 100)
+            )
         except Exception as e:
             print(f"Error al buscar visitantes que hayan gastado mas de 100e: {e}")
     

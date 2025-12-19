@@ -26,6 +26,15 @@ class AtraccionRepo:
         except Exception as e:
             print(f"Error al obtener las atracciones")
             return None
+        
+    @staticmethod
+    def buscar_id(id):
+        try:
+            # metodo para poder obtener el id de la atraccion en cualquier operacion que nos resulte necesario
+            return AtraccionModel.get(AtraccionModel.id == id)
+        except Exception as e:
+            print(f"Error buscando la atraccion con id {id}: {e}")
+            return None
     
     @staticmethod
     def mostrar_activas():
@@ -71,14 +80,6 @@ class AtraccionRepo:
         except Exception as e:
             print(f"Error al obtener atracciones con un mantenimiento programado: {e}")
             return None
-
-    @staticmethod
-    def buscar_id(id):
-        try:
-            return AtraccionModel.get(AtraccionModel.id == id)
-        except Exception as e:
-            print(f"Error buscando la atraccion con id {id}: {e}")
-            return None
         
     @staticmethod
     def cambiar_estado(id):
@@ -88,12 +89,12 @@ class AtraccionRepo:
             if not atraccion:
                 print(f"Atraccion con id {id} no encontrada.")
                 return
-            # cambiamos el estado de la atraccion, si esta a True la pasamos a False o al reves
+            # cambiamos el estado de la atraccion, si esta a True la pasamos a False y viceversa
             if atraccion.activa:
                 atraccion.activa = False
             else:
                 atraccion.activa = True
-            # guardamos el cambio
+            # procuramos guardar el cambio
             atraccion.save()
             print(f"El estado de la atraccion {id} se ha cambiado a {atraccion.activa}")
             return atraccion
@@ -110,7 +111,7 @@ class AtraccionRepo:
                 # hacemos un delete buscando por el id
                 query = AtraccionModel.delete().where(AtraccionModel.id==id)
                 eliminado = query.execute()
-                if eliminado == 0:
+                if eliminado == 0: # en caso de no existir la atraccion
                     print(f"No se encontro la atraccion con id: {id}")
                 else:
                     print("Atraccion eliminada correctamente")
@@ -118,39 +119,41 @@ class AtraccionRepo:
                 print("Se ha cancelado la operacion de eliminacion")
         except Exception as e:
             print(f"Error al eliminar la atraccion {e}")
+            return None
 
     # obtener las 5 atracciones más vendidas (en tickets específicos)  
     @staticmethod
     def atracciones_mas_vendidas():
-    # contamos cuántos tickets tiene cada atracción
-        return list(
-            TicketModel.select(TicketModel.atraccion_id, fn.COUNT(TicketModel.id).alias('total_tickets'))
-            .where(TicketModel.atraccion_id.is_null(False))  # solo tickets con atraccion, que no sean generales
-            .group_by(TicketModel.atraccion_id)  # agrupar por atracción
-            .order_by(fn.COUNT(TicketModel.id).desc())  # ordenar de mayor a menor
-            .limit(5)  # tomar solo los 5 primeros
-        )
+        try:
+        # contamos cuántos tickets tiene cada atracción
+            return list(
+                TicketModel.select(TicketModel.atraccion_id, fn.COUNT(TicketModel.id).alias('total_tickets'))
+                .where(TicketModel.atraccion_id.is_null(False))  # solo tickets con atraccion, que no sean generales
+                .group_by(TicketModel.atraccion_id)  # agrupar por atracción
+                .order_by(fn.COUNT(TicketModel.id).desc())  # ordenar de mayor a menor
+                .limit(5)  # tomar solo los 5 primeros
+            )
+        except Exception as e:
+            print(f"Error al buscar las atracciones mas vendidas: {e}")
+            return None
     
     # atracciones compatibles para un visitante (Atracciones activas que coincidan en tipo, y donde el usuario cumpla con el mínimo de altura)
     @staticmethod
     def atracciones_compatibles(visitante_id):
         try:
-             return list(
-            AtraccionModel.select(
-            AtraccionModel.nombre,
-            AtraccionModel.tipo,
-            AtraccionModel.altura_minima
-        )
-        .join(TicketModel, on=(AtraccionModel.id == TicketModel.atraccion_id))
-        .join(VisitanteModel, on=(TicketModel.visitante_id == VisitanteModel.id))
-        .where(AtraccionModel.activa == True,
-            VisitanteModel.id == visitante_id,
-            AtraccionModel.altura_minima <= VisitanteModel.altura,
-            AtraccionModel.tipo == VisitanteModel.preferencias["tipo_favorito"])  # ← CORREGIDO
-        .order_by(AtraccionModel.tipo, AtraccionModel.nombre)
-    )
+            return list(
+                AtraccionModel.select(AtraccionModel.nombre, AtraccionModel.tipo, AtraccionModel.altura_minima)
+                .join(TicketModel, on=(AtraccionModel.id == TicketModel.atraccion_id))
+                .join(VisitanteModel, on=(TicketModel.visitante_id == VisitanteModel.id))
+                .where((AtraccionModel.activa == True),
+                    (VisitanteModel.id == visitante_id),
+                    (AtraccionModel.altura_minima <= VisitanteModel.altura),
+                    (AtraccionModel.tipo == VisitanteModel.preferencias["tipo_favorito"]))
+                .order_by(AtraccionModel.tipo, AtraccionModel.nombre)
+            )
         except Exception as e:
             print(f"Error al buscar las atracciones compatibles con el visitante: {e}")
+            return None
     
     # Modificaciones en jsonb
     @staticmethod
