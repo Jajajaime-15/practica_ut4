@@ -80,9 +80,9 @@ class VisitanteRepo:
                 VisitanteModel.select(VisitanteModel.nombre, fn.SUM(SQL("CAST(detalles_compra->>'precio' AS DECIMAL)")).alias('gasto_total'))
                   .join(TicketModel, on=(TicketModel.visitante_id == VisitanteModel.id))
                   .group_by(VisitanteModel.id) 
-                  .having(SQL("SUM(CAST(detalles_compra->>'precio' AS DECIMAL))") > 10))
+                  .having(SQL("SUM(CAST(detalles_compra->>'precio' AS DECIMAL))") > 100))
         except Exception as e:
-            print(f"Error al buscar las atracciones compatibles con el visitante: {e}")
+            print(f"Error al buscar visitantes que hayan gastado mas de 100e: {e}")
     
     # Modificaciones en jsonb
     @staticmethod

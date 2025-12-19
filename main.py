@@ -112,13 +112,13 @@ def atracciones():
                 nombre = input("Nombre: ")
                 tipo = input("Tipo: ")
                 altura_min = int(input("Altura minima (cm): "))
-                duracion = input("Duracion en segundos (por defecto 30s): ")
-                capacidad = input("Personas que entran por turno (por defecto 20): ")
-                intensidad = input("Intensidad de la atraccion de 1 a 10 (por defecto 0): ")
+                duracion = input("Duracion en segundos: ")
+                capacidad = input("Personas que entran por turno: ")
+                intensidad = input("Intensidad de la atraccion de 1 a 10: ")
                 caracteristicas = input("Indica si tiene alguna caracteristica (ej. looping, caida libre...), si tiene mas de una separalo con ',': ")
                 apertura = input ("Hora de apertura (HH:MM): ")
                 cierre = input("Hora cierre (HH:MM):")
-                mantenimiento = input("Horarios de mantenimiento, si tiene mas de uno separa por ',': ")
+                mantenimiento = input("Horarios de mantenimiento (HH:MM-HH:MM), si tiene mas de uno separa por ',': ")
                 lista_caracteristicas=[]
                 if caracteristicas != "":
                     partes = caracteristicas.split(",")
@@ -312,7 +312,6 @@ def consultas_utiles():
                 for visitante in VisitanteRepo.visitantes_gastado_tickets():
                     pprint(visitante.__dict__["__data__"])
                     print(f"Total tickets: {visitante.gasto_total}")
-                
             case "4":
                 id = int(input("ID del visitante: "))
                 for atraccion in AtraccionRepo.atracciones_compatibles(id):

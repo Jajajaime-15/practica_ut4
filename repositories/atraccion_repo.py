@@ -60,7 +60,8 @@ class AtraccionRepo:
     @staticmethod
     def mostrar_mantenimiento_programado():
         try:
-            return list(AtraccionModel.select().where(AtraccionModel.detalles["horarios"]["mantenimiento"].is_null(False)))
+            # para poder obtener la longitud de la lista de mantenimiento debemos usar la funcion propia de jsonb dentro del propio SQL
+            return list(AtraccionModel.select().where(SQL("jsonb_array_length(detalles->'horarios'->'mantenimiento') > 0"))) # si se comparase fuera no detectaria la lista como vacia
         except Exception as e:
             print(f"Error al obtener atracciones con un mantenimiento programado: {e}")
             return None
