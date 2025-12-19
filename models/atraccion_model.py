@@ -7,7 +7,7 @@ class AtraccionModel(BaseModel):
     nombre = CharField(max_length=20, unique = True)
     tipo = CharField(max_length= 30, constraints=[Check("tipo IN ('extrema', 'familiar', 'infantil', 'acuatica')")])
     altura_minima = IntegerField()
-    detalles = postgres_ext.BinaryJSONField(default={
+    detalles = postgres_ext.BinaryJSONField(null=True, default={
         "duracion_segundos" : 30, # por defecto 30s
         "capacidad_por_turno" : 20, # por defecto 20 personas por turno
         "intensidad" : 1,

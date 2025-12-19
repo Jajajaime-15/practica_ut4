@@ -12,7 +12,7 @@ class TicketModel(BaseModel):
     fecha_visita = DateField()
     tipo_ticket = TextField(constraints=[Check("tipo_ticket IN ('general', 'colegio', 'empleado')")]) 
     detalles_compra = postgres_ext.BinaryJSONField(null=True, default={
-        "precio": 0.0,
+        "precio": 10.0,
         "descuentos_aplicados": [],
         "servicios_extra": [],
         "metodo_pago": ""
