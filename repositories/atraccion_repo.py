@@ -118,14 +118,20 @@ class AtraccionRepo:
     @staticmethod
     def atracciones_compatibles(visitante_id):
         try:
-            return list(
-                AtraccionModel.select()
-                .join(VisitanteModel)
-                .where(AtraccionModel.activa == True and
-                        AtraccionModel.tipo == VisitanteModel.preferencias['tipo_favorito'] and
-                        AtraccionModel.altura_minima <= VisitanteModel.altura and
-                        VisitanteModel.id == visitante_id)
-            )
+             return list(
+            AtraccionModel.select(
+            AtraccionModel.nombre,
+            AtraccionModel.tipo,
+            AtraccionModel.altura_minima
+        )
+        .join(TicketModel, on=(AtraccionModel.id == TicketModel.atraccion_id))
+        .join(VisitanteModel, on=(TicketModel.visitante_id == VisitanteModel.id))
+        .where(AtraccionModel.activa == True,
+            VisitanteModel.id == visitante_id,
+            AtraccionModel.altura_minima <= VisitanteModel.altura,
+            AtraccionModel.tipo == VisitanteModel.preferencias["tipo_favorito"])  # ← CORREGIDO
+        .order_by(AtraccionModel.tipo, AtraccionModel.nombre)
+    )
         except Exception as e:
             print(f"Error al buscar las atracciones compatibles con el visitante: {e}")
     

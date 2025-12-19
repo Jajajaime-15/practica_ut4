@@ -11,7 +11,7 @@ def ingesta():
             "altura": 165,
             "fecha_registro": "2024-01-15 10:30:00",
             "preferencias": {
-                "tipo_favorito": "familiar",
+                "tipo_favorito": "acuatica",
                 "restricciones": [],
                 "historial_visitas": [
                     {"fecha": "2024-01-20", "atracciones_visitadas": 5},
@@ -39,7 +39,7 @@ def ingesta():
             "altura": 162,
             "fecha_registro": "2024-02-05 09:00:00",
             "preferencias": {
-                "tipo_favorito": "moderada",
+                "tipo_favorito": "familiar",
                 "restricciones": ["embarazo"],
                 "historial_visitas": [
                     {"fecha": "2024-02-12", "atracciones_visitadas": 6},
@@ -106,6 +106,24 @@ def ingesta():
                 "capacidad_por_turno": 30,
                 "intensidad": 5,
                 "caracteristicas": ["tobogan_curvo", "piscina_final"],
+                "horarios": {
+                    "apertura": "11:00",
+                    "cierre": "20:00",
+                    "mantenimiento": ["15:30-16:00"],
+                },
+            },
+            "activa": True,
+            "fecha_inauguracion": "2023-06-20",
+        },
+        {
+            "nombre": "Puente Acuático",
+            "tipo": "acuatica",
+            "altura_minima": 120,
+            "detalles": {
+                "duracion_segundos": 45,
+                "capacidad_por_turno": 30,
+                "intensidad": 5,
+                "caracteristicas": ["puente_curvo", "piscina_final"],
                 "horarios": {
                     "apertura": "11:00",
                     "cierre": "20:00",
@@ -235,7 +253,7 @@ def ingesta():
         },
         {
             "visitante_id": 4,  # David
-            "atraccion_id": None,  # general
+            "atraccion_id": None,  
             "fecha_compra": "2024-03-01 09:00:00",
             "fecha_visita": "2024-03-10",
             "tipo_ticket": "colegio",

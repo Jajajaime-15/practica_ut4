@@ -301,11 +301,18 @@ def consultas_utiles():
             case "1":
                 for visitante in VisitanteRepo.visitantes_ordenados_tickets():
                     pprint(visitante.__dict__["__data__"])
+                    print(f"Total tickets: {visitante.total_tickets}")
+                    #print(f"Nombre: {visitante.nombre} - Tickets comprados: {visitante.total_tickets}")
             case "2":
                 for atraccion in AtraccionRepo.atracciones_mas_vendidas():
                     pprint(atraccion.__dict__["__data__"])
+                    print(f"Total tickets: {atraccion.total_tickets}")
+                    #print(f"Atraccion: {atraccion.id} - Tickets comprados: {atraccion.total_tickets}")
             case "3":
-                break
+                for visitante in VisitanteRepo.visitantes_gastado_tickets():
+                    pprint(visitante.__dict__["__data__"])
+                    print(f"Total tickets: {visitante.gasto_total}")
+                
             case "4":
                 id = int(input("ID del visitante: "))
                 for atraccion in AtraccionRepo.atracciones_compatibles(id):

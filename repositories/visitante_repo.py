@@ -74,16 +74,13 @@ class VisitanteRepo:
 
     #Obtener visitantes que hayan gastado más de 100€ en tickets (suma de detalles_compra→precio)
     @staticmethod
-    def cambiarestaaaaaa(visitante_id): # IMPORTANTE CAMBIAR ESTA JULIO
+    def visitantes_gastado_tickets(): 
         try:
             return list(
-                AtraccionModel.select()
-                .join(VisitanteModel)
-                .where(AtraccionModel.activa == True and
-                        AtraccionModel.tipo == VisitanteModel.preferencias['tipo_favorito'] and
-                        AtraccionModel.altura_minima <= VisitanteModel.altura and
-                        VisitanteModel.id == visitante_id)
-            )
+                VisitanteModel.select(VisitanteModel.nombre, fn.SUM(SQL("CAST(detalles_compra->>'precio' AS DECIMAL)")).alias('gasto_total'))
+                  .join(TicketModel, on=(TicketModel.visitante_id == VisitanteModel.id))
+                  .group_by(VisitanteModel.id) 
+                  .having(SQL("SUM(CAST(detalles_compra->>'precio' AS DECIMAL))") > 10))
         except Exception as e:
             print(f"Error al buscar las atracciones compatibles con el visitante: {e}")
     
