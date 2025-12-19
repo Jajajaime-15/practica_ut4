@@ -56,7 +56,22 @@ def visitantes():
                 nombre = input("Nombre: ")
                 email = input("Email: ")
                 altura = input("Altura: ")
-                preferencias = {}
+                tipo_fav = input("Indica si tienes un tipo de atraccion favorita (extrema,familia,infantil,acuatica): ")
+                restricciones_txt = input("Indica si tienes algun tipo de restriccion, si es mas de una separa con ',': ")
+                restricciones = [] # lista de restricciones 
+                if restricciones_txt != "":
+                    partes = restricciones_txt.split(",")
+                    for restriccion in partes:
+                        restriccion = restriccion.strip()
+                        if restriccion != "":
+                            restricciones.append(restriccion)
+                preferencias = None
+                if tipo_fav != "" or len(restricciones)>0:
+                    preferencias = {
+                        "tipo_favorito": tipo_fav,
+                        "restricciones": restricciones,
+                        "historial_visitas":[]
+                    }
                 VisitanteRepo.crear_visitante(nombre, email, altura, preferencias)
                 print("Visitante creado correctamente.")
             case "2":
@@ -97,7 +112,38 @@ def atracciones():
                 nombre = input("Nombre: ")
                 tipo = input("Tipo: ")
                 altura_min = int(input("Altura minima (cm): "))
-                detalles = {}
+                duracion = input("Duracion en segundos (por defecto 30s): ")
+                capacidad = input("Personas que entran por turno (por defecto 20): ")
+                intensidad = input("Intensidad de la atraccion de 1 a 10 (por defecto 0): ")
+                caracteristicas = input("Indica si tiene alguna caracteristica (ej. looping, caida libre...), si tiene mas de una separalo con ',': ")
+                apertura = input ("Hora de apertura (HH:MM): ")
+                cierre = input("Hora cierre (HH:MM):")
+                mantenimiento = input("Horarios de mantenimiento, si tiene mas de uno separa por ',': ")
+                lista_caracteristicas=[]
+                if caracteristicas != "":
+                    partes = caracteristicas.split(",")
+                    for caracteristica in partes:
+                        caracteristica=caracteristica.strip()
+                        if caracteristica != "":
+                            lista_caracteristicas.append(caracteristica)
+                horarios_mante =[]
+                if mantenimiento != "":
+                    partes_mante = mantenimiento.split(",")
+                    for mante in partes_mante:
+                        mante = mante.strip()
+                        if mante != "":
+                            horarios_mante.append(mante)
+                detalles = {
+                        "duracion_segundos": duracion,
+                        "capacidad_por_turno": capacidad,
+                        "intensidad": intensidad,
+                        "caracteristicas": lista_caracteristicas,
+                        "horarios":{
+                            "apertura":apertura,
+                            "cierre": cierre,
+                            "mantenimiento": horarios_mante
+                        }
+                    }
                 AtraccionRepo.crear_atraccion(nombre,tipo,altura_min,detalles)
                 print("Atraccion creada correctamente.")
             case "2":
@@ -153,10 +199,32 @@ def tickets():
                     id_atraccion=int(id_atraccion_str)
                 fecha_visita = input("Fecha de visita (YYYY-MM-DD): ")
                 tipo_ticket = input("Tipo de ticket (general, colegio o empleado): ")
-                usado = False
-                fecha_uso = None
+                precio = input("Precio: ")
+                descuentos = input("Indica si hay algun descuento aplicado,si hay mas de uno separa por ',': ")
+                extras = input("Indica si incluye algun servicio extra, si incluye mas de uno separa por ',': ")
+                metodo_pago = input("Indica el metodo de pago: ")
                 detalles ={}
-                TicketRepo.crear_ticket(id_visitante,id_atraccion,fecha_visita,tipo_ticket,usado,fecha_uso,detalles)
+                if precio != "":
+                    detalles["precio"]= float(precio)
+                if descuentos != "":
+                    lista_descuentos=[]
+                    partes_desc = descuentos.split(",")
+                    for descuento in partes_desc:
+                        descuento = descuento.strip()
+                        if descuento != "":
+                            lista_descuentos.append(descuento)
+                    detalles["descuentos_aplicados"] = lista_descuentos
+                if extras != "":
+                    lista_extras = []
+                    partes_extras = extras.split(",")
+                    for extra in partes_extras:
+                        extra = extra.strip()
+                        if extra != "":
+                            lista_extras.append(extra)
+                    detalles["servicios_extra"] = lista_extras
+                if metodo_pago != "":
+                    detalles["metodo_pago"] = metodo_pago
+                TicketRepo.crear_ticket(id_visitante,id_atraccion,fecha_visita,tipo_ticket,detalles)
                 print("Ticket creado correctamente.")
             case "2":
                 for ticket in TicketRepo.mostrar_todos():

@@ -9,10 +9,7 @@ class VisitanteModel(BaseModel):
     altura = IntegerField()
     fecha_registro = DateTimeField(default=datetime.now) # para que sea la fecha del momento de la creacion si no se especifica
     preferencias = postgres_ext.BinaryJSONField(null=True, default={
-        "tipo_favorito": "extrema",
-        "restricciones": ["problemas_cardiacos"],
-        "historial_visitas": [
-            {"fecha": "2024-06-15", "atracciones_visitadas": 8},
-            {"fecha": "2024-08-20", "atracciones_visitadas": 12}
-        ]
+        "tipo_favorito": "",
+        "restricciones": [],
+        "historial_visitas": []
     })
